@@ -72,6 +72,45 @@ Experience how combining multiple Gemini Nano APIs creates powerful end-to-end s
 - Chrome browser version 138 or later
 - Gemini Nano model support on your device
 
+### System Requirements
+
+- **Operating Systems**: Windows 10/11, macOS 11+, ChromeOS, Linux, Android
+- **RAM**: 8GB+ recommended (4GB minimum)
+- **Storage**: At least 22MB free space for models
+- **Processor**: Modern x86-64 or ARM64 processor (less than ~5 years old recommended)
+
+### Setup & Configuration
+
+Before using these demos, you'll need to configure Chrome to enable the Gemini Nano APIs:
+
+#### 1. Enable Chrome Flags
+
+1. Open `chrome://flags` in your Chrome browser
+2. Search for "Gemini Nano" and enable the following flags:
+   - **Prompt API for Gemini Nano** - Enables the core language model API
+   - **Prompt API for Gemini Nano with Multimodal Input** - Adds support for image input
+   - **Summarization API for Gemini Nano** - Enables text summarization capabilities
+   - **Writer API for Gemini Nano** - Enables text generation capabilities
+   - **Rewriter API for Gemini Nano** - Enables text rewriting capabilities
+3. Search for "Optimization" and enable:
+   - **Optimization Guide On Device Model** - Required for on-device model execution
+4. Click the "Restart" button to apply changes
+
+#### 2. Update Chrome Components
+
+1. Open `chrome://components` in your Chrome browser
+2. Find "Optimization Guide On Device Model"
+3. Click "Check for update" and wait for the component to download and install
+4. Restart Chrome if needed
+
+#### 3. First-Time Model Download
+
+The first time you use each API, Chrome may need to download the required model files. This will happen automatically when you:
+- Click any "Check API Support" button in the demos
+- Use an API for the first time
+
+> **Note:** Download times vary based on your internet connection and device performance. Most models are under 100MB.
+
 ### Installation
 
 1. Clone this repository:
@@ -105,11 +144,22 @@ Alternatively, you can access the demos directly through GitHub Pages at [anurag
 
 ## Technical Details
 
+### On-Device Execution
+
 All processing happens on-device using Chrome's built-in Gemini Nano models:
 
 - No cloud connectivity required for inference
 - Data never leaves the device
 - Processing happens locally, ensuring privacy
+
+### Security & Privacy
+
+Gemini Nano's on-device approach offers several advantages:
+
+- **Enhanced Privacy**: Input data and generated outputs remain on your device
+- **Offline Capability**: Use AI features without an internet connection (after initial model download)
+- **Reduced Latency**: No network round-trips means faster responses
+- **Data Sovereignty**: Control over your data since it's processed locally
 
 The demos use the following Chrome JavaScript APIs:
 
@@ -165,3 +215,29 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ---
 
 ⚠️ **Note**: The Gemini Nano APIs are still evolving. Some features may be experimental or change in future Chrome releases.
+
+## Troubleshooting
+
+### Common Issues
+
+1. **APIs Not Available**
+   - Ensure Chrome is version 138 or later
+   - Verify all required flags are enabled in `chrome://flags`
+   - Restart Chrome completely (not just the tab)
+   - Check `chrome://components` to ensure "Optimization Guide On Device Model" is updated
+
+2. **Model Download Issues**
+   - If downloads stall, try disabling and re-enabling the relevant flag
+   - Ensure you have a stable internet connection
+   - Verify you have sufficient disk space (typically 100-200MB per model)
+
+3. **Performance Issues**
+   - Responses may be slower on older devices
+   - Close unnecessary tabs and applications to free up resources
+   - First-time API usage might be slower due to model initialization
+
+4. **API Status Messages**
+   - **"Ready"**: API is available and ready to use
+   - **"Downloading"**: Model is being downloaded, please wait
+   - **"Downloadable"**: Model needs to be downloaded, trigger with any API call
+   - **"Unavailable"**: Your device or Chrome version does not support this API
