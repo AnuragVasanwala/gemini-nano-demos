@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Nano API Workflows & Integrations</title>
+    <style>
+        :root {
+            --primary: #4285f4;
+            --primary-dark: #3367d6;
+            --secondary: #ea4335;
+            --green: #34a853;
+            --yellow: #fbbc05;
+            --surface: #ffffff;
+            --background: #f8f9fa;
+            --on-surface: #202124;
+            --on-surface-variant: #5f6368;
+            --on-primary: #ffffff;
+            --error: #d93025;
+            --warning: #f29900;
+            --success: #188038;
+            --info: #1a73e8;
+            --border: #dadce0;
+            --shadow-1: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+            --shadow-2: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+            --shadow-3: 0 2px 6px 2px rgba(60, 64, 67, 0.15), 0 1px 2px 0 rgba(60, 64, 67, 0.3);
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-xxl: 48px;
+            --font-family: "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background: var(--background);
+            color: var(--on-surface);
+            min-height: 100vh;
+            padding: var(--spacing-lg);
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        h1 {
+            color: var(--on-surface);
+            margin-bottom: var(--spacing-md);
+            font-size: 2.25rem;
+            font-weight: 500;
+        }
+        
+        h1 span {
+            color: var(--primary);
+        }
+        
+        .subtitle {
+            color: var(--on-surface-variant);
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto var(--spacing-lg);
+        }
+        
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .nav-link {
+            color: var(--primary);
+            text-decoration: none;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-sm);
+            transition: background-color 0.2s;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(66, 133, 244, 0.1);
+        }
+        
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .workflow-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-1);
+            transition: all 0.2s ease;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .workflow-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary);
+        }
+        
+        .workflow-card:hover {
+            box-shadow: var(--shadow-2);
+            transform: translateY(-2px);
+        }
+        
+        .workflow-title {
+            color: var(--on-surface);
+            margin-bottom: var(--spacing-md);
+            font-size: 1.25rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .workflow-description {
+            color: var(--on-surface-variant);
+            margin-bottom: var(--spacing-lg);
+            font-size: 0.9rem;
+        }
+        
+        .workflow-diagram {
+            background-color: rgba(66, 133, 244, 0.05);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        .workflow-step {
+            background-color: var(--surface);
+            border: 1px solid var(--primary);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
+            text-align: center;
+            width: 28%;
+            font-size: 0.9rem;
+            z-index: 2;
+        }
+        
+        .workflow-step-icon {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .workflow-arrow {
+            width: 5%;
+            color: var(--primary);
+            font-size: 1.5rem;
+            text-align: center;
+            z-index: 1;
+        }
+        
+        .input-group {
+            margin-bottom: var(--spacing-md);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-weight: 500;
+            color: var(--on-surface);
+            font-size: 0.9rem;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            font-family: var(--font-family);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            color: var(--on-surface);
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        button {
+            background: var(--primary);
+            color: var(--on-primary);
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            min-height: 36px;
+        }
+        
+        button:hover {
+            background: var(--primary-dark);
+            box-shadow: var(--shadow-1);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        button.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        button.secondary:hover {
+            background: rgba(66, 133, 244, 0.05);
+        }
+        
+        .result-container {
+            margin-top: var(--spacing-lg);
+            border-top: 1px solid var(--border);
+            padding-top: var(--spacing-lg);
+        }
+        
+        .result-step {
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .result-step-title {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-weight: 500;
+            margin-bottom: var(--spacing-sm);
+            font-size: 0.95rem;
+        }
+        
+        .result-content {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-md);
+            font-size: 0.9rem;
+            color: var(--on-surface);
+            white-space: pre-wrap;
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .status {
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-sm);
+            font-size: 0.875rem;
+            font-weight: 400;
+        }
+        
+        .status.loading {
+            background: rgba(251, 188, 5, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(251, 188, 5, 0.3);
+        }
+        
+        .status.success {
+            background: rgba(52, 168, 83, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(52, 168, 83, 0.3);
+        }
+        
+        .status.error {
+            background: rgba(234, 67, 53, 0.1);
+            color: var(--error);
+            border: 1px solid rgba(234, 67, 53, 0.3);
+        }
+        
+        .status.info {
+            background: rgba(66, 133, 244, 0.1);
+            color: var(--info);
+            border: 1px solid rgba(66, 133, 244, 0.3);
+        }
+        
+        .loading-progress {
+            height: 4px;
+            width: 100%;
+            background-color: rgba(66, 133, 244, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .loading-progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: var(--spacing-xl);
+            color: var(--on-surface-variant);
+            font-size: 0.9rem;
+        }
+        
+        .use-case-tag {
+            display: inline-block;
+            background: rgba(66, 133, 244, 0.1);
+            color: var(--primary);
+            border-radius: var(--radius-sm);
+            padding: 2px 8px;
+            font-size: 0.8rem;
+            margin-right: var(--spacing-xs);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--spacing-md);
+            }
+            
+            .workflow-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .workflow-diagram {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+            
+            .workflow-step {
+                width: 100%;
+            }
+            
+            .workflow-arrow {
+                transform: rotate(90deg);
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+        
+        /* Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono&display=swap');
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔄 <span>Gemini Nano</span> API Workflow Integrations</h1>
+            <p class="subtitle">Discover how multiple Gemini Nano APIs can be chained together to create powerful workflows for real-world applications, all running locally on your device.</p>
+            
+            <div class="nav-links">
+                <a href="gemini-nano-samples.html" class="nav-link">← Back to API Demo</a>
+            </div>
+        </header>
+        
+        <div class="workflow-grid">
+            <!-- Workflow 1: Foreign Content Summarizer -->
+            <div class="workflow-card">
+                <h3 class="workflow-title">🌎 Universal Content Summarizer</h3>
+                <p class="workflow-description">Automatically detect a text's language, translate it to your preferred language, and generate a concise summary - all in one workflow.</p>
+                
+                <div class="workflow-diagram">
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">🔍</span>
+                        Detect Language
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">🌍</span>
+                        Translate
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">📝</span>
+                        Summarize
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="universalText">Paste Foreign Text:</label>
+                    <textarea id="universalText" placeholder="Paste text in any language to detect, translate, and summarize...">La inteligencia artificial (IA) es la inteligencia llevada a cabo por máquinas. En ciencias de la computación, una máquina «inteligente» ideal es un agente flexible que percibe su entorno y lleva a cabo acciones que maximicen sus posibilidades de éxito en algún objetivo o tarea. Coloquialmente, el término inteligencia artificial se aplica cuando una máquina imita las funciones «cognitivas» que los humanos asocian con otras mentes humanas, como por ejemplo: «aprender» y «resolver problemas».</textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label for="targetLanguage">Target Language:</label>
+                    <select id="targetLanguage">
+                        <option value="en">English</option>
+                        <option value="de">German</option>
+                        <option value="fr">French</option>
+                        <option value="ja">Japanese</option>
+                        <option value="zh">Chinese</option>
+                        <option value="ko">Korean</option>
+                        <option value="ru">Russian</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="summaryLength">Summary Length:</label>
+                    <select id="summaryLength">
+                        <option value="short">Short</option>
+                        <option value="medium">Medium</option>
+                        <option value="long">Long</option>
+                    </select>
+                </div>
+                
+                <div id="universalProgressContainer" class="loading-progress" style="display: none;">
+                    <div id="universalProgressBar" class="loading-progress-bar" style="width: 0%;"></div>
+                </div>
+                
+                <div class="button-group">
+                    <button onclick="runUniversalWorkflow()">🚀 Process Content</button>
+                    <button onclick="checkUniversalSupport()" class="secondary">🔍 Check API Support</button>
+                </div>
+                
+                <div id="universalStatus" class="status" style="display: none;"></div>
+                
+                <div id="universalResults" class="result-container" style="display: none;">
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>🔍</span> Step 1: Language Detection
+                        </div>
+                        <div id="detectResult" class="result-content"></div>
+                    </div>
+                    
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>🌍</span> Step 2: Translation
+                        </div>
+                        <div id="translateResult" class="result-content"></div>
+                    </div>
+                    
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>📝</span> Step 3: Summary
+                        </div>
+                        <div id="summarizeResult" class="result-content"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: var(--spacing-md);">
+                    <span class="use-case-tag">News</span>
+                    <span class="use-case-tag">Research</span>
+                    <span class="use-case-tag">Global Communication</span>
+                    <span class="use-case-tag">Academic</span>
+                </div>
+            </div>
+            
+            <!-- Workflow 2: Content Generator & Rewriter -->
+            <div class="workflow-card">
+                <h3 class="workflow-title">✍️ AI Content Generator & Polisher</h3>
+                <p class="workflow-description">Generate draft content based on your prompt, then automatically refine it to improve tone, clarity, and professionalism.</p>
+                
+                <div class="workflow-diagram">
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">💬</span>
+                        Generate Draft
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">🔄</span>
+                        Rewrite & Polish
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">✨</span>
+                        Final Content
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="contentPrompt">What would you like to write about?</label>
+                    <textarea id="contentPrompt" placeholder="Describe what you want to generate...">Write an introduction paragraph for a blog post about sustainable technology trends.</textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label for="contentTone">Desired Tone:</label>
+                    <select id="contentTone">
+                        <option value="formal">Professional/Formal</option>
+                        <option value="casual">Casual/Conversational</option>
+                        <option value="enthusiastic">Enthusiastic/Energetic</option>
+                        <option value="informative">Informative/Educational</option>
+                    </select>
+                </div>
+                
+                <div id="contentProgressContainer" class="loading-progress" style="display: none;">
+                    <div id="contentProgressBar" class="loading-progress-bar" style="width: 0%;"></div>
+                </div>
+                
+                <div class="button-group">
+                    <button onclick="runContentWorkflow()">✨ Generate & Polish</button>
+                    <button onclick="checkContentSupport()" class="secondary">🔍 Check API Support</button>
+                </div>
+                
+                <div id="contentStatus" class="status" style="display: none;"></div>
+                
+                <div id="contentResults" class="result-container" style="display: none;">
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>💬</span> Step 1: Initial Draft
+                        </div>
+                        <div id="draftResult" class="result-content"></div>
+                    </div>
+                    
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>🔄</span> Step 2: Enhanced Version
+                        </div>
+                        <div id="enhancedResult" class="result-content"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: var(--spacing-md);">
+                    <span class="use-case-tag">Blogging</span>
+                    <span class="use-case-tag">Email Writing</span>
+                    <span class="use-case-tag">Content Marketing</span>
+                    <span class="use-case-tag">Social Media</span>
+                </div>
+            </div>
+            
+            <!-- Workflow 3: Multilingual Customer Support -->
+            <div class="workflow-card">
+                <h3 class="workflow-title">🌐 Universal Customer Support</h3>
+                <p class="workflow-description">Allow customers to write in any language, then process their message to provide helpful responses in their native language.</p>
+                
+                <div class="workflow-diagram">
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">🔍</span>
+                        Detect Language
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">🌍</span>
+                        Translate to English
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">💬</span>
+                        Generate Response
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">🌍</span>
+                        Translate Back
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="customerMessage">Customer Message (any language):</label>
+                    <textarea id="customerMessage" placeholder="Customer message in any language...">Ich habe mein Paket noch nicht erhalten und es sollte letzte Woche ankommen. Meine Bestellnummer ist #12345. Können Sie mir bitte helfen?</textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label for="supportContext">Support Agent Context:</label>
+                    <textarea id="supportContext" placeholder="Additional context for the support agent..." style="height: 60px;">You are a helpful customer support agent for an e-commerce store. Be friendly and try to solve the customer's issue efficiently.</textarea>
+                </div>
+                
+                <div id="supportProgressContainer" class="loading-progress" style="display: none;">
+                    <div id="supportProgressBar" class="loading-progress-bar" style="width: 0%;"></div>
+                </div>
+                
+                <div class="button-group">
+                    <button onclick="runSupportWorkflow()">🚀 Process Support Request</button>
+                    <button onclick="checkSupportSupport()" class="secondary">🔍 Check API Support</button>
+                </div>
+                
+                <div id="supportStatus" class="status" style="display: none;"></div>
+                
+                <div id="supportResults" class="result-container" style="display: none;">
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>🔍</span> Step 1: Detected Language
+                        </div>
+                        <div id="customerLanguageResult" class="result-content"></div>
+                    </div>
+                    
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>🌍</span> Step 2: Translated Message
+                        </div>
+                        <div id="translatedQueryResult" class="result-content"></div>
+                    </div>
+                    
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>💬</span> Step 3: Support Response (English)
+                        </div>
+                        <div id="supportResponseResult" class="result-content"></div>
+                    </div>
+                    
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>🌍</span> Step 4: Translated Response
+                        </div>
+                        <div id="translatedResponseResult" class="result-content"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: var(--spacing-md);">
+                    <span class="use-case-tag">Customer Support</span>
+                    <span class="use-case-tag">E-commerce</span>
+                    <span class="use-case-tag">Global Business</span>
+                    <span class="use-case-tag">User Experience</span>
+                </div>
+            </div>
+            
+            <!-- Workflow 4: Intelligent Document Processor -->
+            <div class="workflow-card">
+                <h3 class="workflow-title">📋 Intelligent Document Processor</h3>
+                <p class="workflow-description">Process long documents by first summarizing them, then using AI to analyze and extract specific information or answer questions.</p>
+                
+                <div class="workflow-diagram">
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">📝</span>
+                        Summarize
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">💬</span>
+                        Extract Info/Answer
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">✨</span>
+                        Final Result
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="documentText">Document Text:</label>
+                    <textarea id="documentText" placeholder="Paste a long document text here..." style="height: 150px;">The World Health Organization (WHO) is a specialized agency of the United Nations responsible for international public health. The WHO Constitution states its main objective as "the attainment by all peoples of the highest possible level of health". Headquartered in Geneva, Switzerland, it has six regional offices and 150 field offices worldwide.
+
+The WHO was established on 7 April 1948. The first meeting of the World Health Assembly (WHA), the agency's governing body, took place on 24 July of that year. The WHO incorporated the assets, personnel, and duties of the League of Nations' Health Organization and the Office International d'Hygiène Publique, including the International Classification of Diseases (ICD). Its work began in earnest in 1951 after a significant infusion of financial and technical resources.
+
+The WHO's mandate includes advocating for universal healthcare, monitoring public health risks, coordinating responses to health emergencies, and promoting human health and well-being. It provides technical assistance to countries, sets international health standards, and collects data on global health issues. A publication, the World Health Report, provides assessments of worldwide health topics. The WHO has played a leading role in several public health achievements, most notably the eradication of smallpox, the near-eradication of polio, and the development of an Ebola vaccine. Its current priorities include communicable diseases, particularly HIV/AIDS, Ebola, COVID-19, malaria and tuberculosis; non-communicable diseases such as heart disease and cancer; healthy diet, nutrition, and food security; occupational health; and substance abuse.</textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label for="documentQuery">Question or Information to Extract:</label>
+                    <input type="text" id="documentQuery" placeholder="E.g., When was the WHO established?" value="What are the current priorities of the WHO?">
+                </div>
+                
+                <div id="documentProgressContainer" class="loading-progress" style="display: none;">
+                    <div id="documentProgressBar" class="loading-progress-bar" style="width: 0%;"></div>
+                </div>
+                
+                <div class="button-group">
+                    <button onclick="runDocumentWorkflow()">🔍 Process & Extract</button>
+                    <button onclick="checkDocumentSupport()" class="secondary">🔍 Check API Support</button>
+                </div>
+                
+                <div id="documentStatus" class="status" style="display: none;"></div>
+                
+                <div id="documentResults" class="result-container" style="display: none;">
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>📝</span> Step 1: Document Summary
+                        </div>
+                        <div id="documentSummaryResult" class="result-content"></div>
+                    </div>
+                    
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>💬</span> Step 2: Information Extraction
+                        </div>
+                        <div id="documentAnswerResult" class="result-content"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: var(--spacing-md);">
+                    <span class="use-case-tag">Research</span>
+                    <span class="use-case-tag">Legal Documents</span>
+                    <span class="use-case-tag">Academic</span>
+                    <span class="use-case-tag">Business Intelligence</span>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Note: All processing happens locally on your device using Google's Gemini Nano models - no data is sent to the cloud.</p>
+            <p style="margin-top: var(--spacing-sm);"><a href="gemini-nano-samples.html">← Back to Individual API Demos</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // Global variables for API sessions
+        let promptSession = null;
+        let summarizerSession = null;
+        let writerSession = null;
+        let rewriterSession = null;
+        let translatorSession = null;
+        let languageDetector = null;
+        
+        // Utility function to show status
+        function showStatus(elementId, message, type = 'info') {
+            const statusElement = document.getElementById(elementId);
+            statusElement.className = `status ${type}`;
+            statusElement.textContent = message;
+            statusElement.style.display = 'block';
+        }
+
+        // Utility function to hide status
+        function hideStatus(elementId) {
+            document.getElementById(elementId).style.display = 'none';
+        }
+        
+        // Utility function to show results
+        function showResult(elementId, result) {
+            const resultElement = document.getElementById(elementId);
+            resultElement.textContent = result;
+        }
+        
+        // Check if APIs are available and ready
+        async function checkUniversalSupport() {
+            showStatus('universalStatus', 'Checking API support...', 'loading');
+            
+            try {
+                // Check Language Detector
+                if (!('LanguageDetector' in self)) {
+                    throw new Error('Language Detector API not available');
+                }
+                const detectorStatus = await LanguageDetector.availability();
+                
+                // Check Translator
+                if (!('Translator' in self)) {
+                    throw new Error('Translator API not available');
+                }
+                // Note: Translator availability needs language pair
+                const translatorStatus = await Translator.availability({
+                    sourceLanguage: 'en',
+                    targetLanguage: 'es'
+                });
+                
+                // Check Summarizer
+                if (!('Summarizer' in self)) {
+                    throw new Error('Summarizer API not available');
+                }
+                const summarizerStatus = await Summarizer.availability();
+                
+                showStatus('universalStatus', 
+                    `API Status: Language Detector (${detectorStatus}), ` +
+                    `Translator (${translatorStatus}), ` +
+                    `Summarizer (${summarizerStatus})`, 
+                    'success');
+                
+                if (detectorStatus === 'ready' && 
+                    translatorStatus === 'ready' && 
+                    summarizerStatus === 'ready') {
+                    showStatus('universalStatus', 'All APIs are ready!', 'success');
+                } else {
+                    showStatus('universalStatus', 'Some APIs need to download models.', 'info');
+                }
+            } catch (error) {
+                showStatus('universalStatus', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Run the universal workflow: detect → translate → summarize
+        async function runUniversalWorkflow() {
+            const text = document.getElementById('universalText').value;
+            const targetLang = document.getElementById('targetLanguage').value;
+            const summaryLength = document.getElementById('summaryLength').value;
+            
+            if (!text.trim()) {
+                showStatus('universalStatus', 'Please enter text to process', 'error');
+                return;
+            }
+            
+            // Show progress container
+            document.getElementById('universalProgressContainer').style.display = 'block';
+            document.getElementById('universalProgressBar').style.width = '0%';
+            
+            try {
+                showStatus('universalStatus', 'Starting workflow...', 'loading');
+                document.getElementById('universalResults').style.display = 'none';
+                
+                // Step 1: Detect language
+                showStatus('universalStatus', 'Step 1: Detecting language...', 'loading');
+                document.getElementById('universalProgressBar').style.width = '10%';
+                
+                if (!('LanguageDetector' in self)) {
+                    throw new Error('Language Detector API not available');
+                }
+                
+                const detector = await LanguageDetector.create();
+                const detectionResults = await detector.detect(text);
+                
+                const detectedLang = detectionResults[0].detectedLanguage;
+                const confidence = detectionResults[0].confidence;
+                
+                showResult('detectResult', `Detected language: ${detectedLang} (confidence: ${(confidence * 100).toFixed(1)}%)`);
+                document.getElementById('universalProgressBar').style.width = '33%';
+                
+                // Step 2: Translate to target language (if different)
+                showStatus('universalStatus', 'Step 2: Translating text...', 'loading');
+                
+                if (!('Translator' in self)) {
+                    throw new Error('Translator API not available');
+                }
+                
+                let translatedText = text;
+                let translationInfo = 'Source and target languages are the same. No translation needed.';
+                
+                if (detectedLang !== targetLang) {
+                    const translator = await Translator.create({
+                        sourceLanguage: detectedLang,
+                        targetLanguage: targetLang
+                    });
+                    
+                    translatedText = await translator.translate(text);
+                    translationInfo = `Translated from ${detectedLang} to ${targetLang}`;
+                    translator.destroy();
+                }
+                
+                showResult('translateResult', `${translationInfo}\n\n${translatedText}`);
+                document.getElementById('universalProgressBar').style.width = '66%';
+                
+                // Step 3: Summarize the translated text
+                showStatus('universalStatus', 'Step 3: Generating summary...', 'loading');
+                
+                if (!('Summarizer' in self)) {
+                    throw new Error('Summarizer API not available');
+                }
+                
+                const summarizer = await Summarizer.create({
+                    type: 'key-points',
+                    format: 'plain-text',
+                    length: summaryLength
+                });
+                
+                const summary = await summarizer.summarize(translatedText);
+                showResult('summarizeResult', summary);
+                
+                document.getElementById('universalProgressBar').style.width = '100%';
+                showStatus('universalStatus', 'Workflow completed successfully!', 'success');
+                
+                // Show results container
+                document.getElementById('universalResults').style.display = 'block';
+                
+                // Clean up resources
+                detector.destroy();
+                summarizer.destroy();
+                
+                // Hide progress after a delay
+                setTimeout(() => {
+                    document.getElementById('universalProgressContainer').style.display = 'none';
+                }, 1500);
+                
+            } catch (error) {
+                document.getElementById('universalProgressContainer').style.display = 'none';
+                showStatus('universalStatus', `Workflow failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Check support for content generator workflow
+        async function checkContentSupport() {
+            showStatus('contentStatus', 'Checking API support...', 'loading');
+            
+            try {
+                // Check Language Model
+                if (!('LanguageModel' in self)) {
+                    throw new Error('Language Model API not available');
+                }
+                const promptStatus = await LanguageModel.availability();
+                
+                // Check Rewriter (note: this is experimental)
+                let rewriterStatus = 'unavailable';
+                if ('Rewriter' in self) {
+                    try {
+                        rewriterStatus = await Rewriter.availability();
+                    } catch (e) {
+                        rewriterStatus = 'unavailable';
+                    }
+                }
+                
+                showStatus('contentStatus', 
+                    `API Status: Language Model (${promptStatus}), ` +
+                    `Rewriter (${rewriterStatus})`, 
+                    'success');
+                
+            } catch (error) {
+                showStatus('contentStatus', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Run the content generation workflow
+        async function runContentWorkflow() {
+            const prompt = document.getElementById('contentPrompt').value;
+            const tone = document.getElementById('contentTone').value;
+            
+            if (!prompt.trim()) {
+                showStatus('contentStatus', 'Please enter a prompt', 'error');
+                return;
+            }
+            
+            // Show progress container
+            document.getElementById('contentProgressContainer').style.display = 'block';
+            document.getElementById('contentProgressBar').style.width = '0%';
+            
+            try {
+                showStatus('contentStatus', 'Starting content workflow...', 'loading');
+                document.getElementById('contentResults').style.display = 'none';
+                
+                // Step 1: Generate initial content with LanguageModel
+                showStatus('contentStatus', 'Step 1: Generating initial content...', 'loading');
+                document.getElementById('contentProgressBar').style.width = '25%';
+                
+                if (!('LanguageModel' in self)) {
+                    throw new Error('Language Model API not available');
+                }
+                
+                let toneInstruction = '';
+                switch (tone) {
+                    case 'formal':
+                        toneInstruction = 'Write in a professional, formal tone.';
+                        break;
+                    case 'casual':
+                        toneInstruction = 'Write in a casual, conversational tone.';
+                        break;
+                    case 'enthusiastic':
+                        toneInstruction = 'Write in an enthusiastic, energetic tone.';
+                        break;
+                    case 'informative':
+                        toneInstruction = 'Write in an informative, educational tone.';
+                        break;
+                }
+                
+                const systemPrompt = `You are a skilled content writer. ${toneInstruction} Keep your response concise and focused.`;
+                
+                // Create or reuse the session
+                if (!promptSession) {
+                    promptSession = await LanguageModel.create({
+                        systemPrompt: systemPrompt
+                    });
+                }
+                
+                const initialContent = await promptSession.prompt(prompt);
+                showResult('draftResult', initialContent);
+                
+                document.getElementById('contentProgressBar').style.width = '50%';
+                
+                // Step 2: Polish and enhance the content
+                showStatus('contentStatus', 'Step 2: Polishing and enhancing content...', 'loading');
+                
+                let enhancedContent = initialContent;
+                
+                // Check if Rewriter is available
+                if ('Rewriter' in self) {
+                    try {
+                        const rewriterStatus = await Rewriter.availability();
+                        
+                        if (rewriterStatus === 'ready') {
+                            const rewriter = await Rewriter.create({
+                                tone: 'as-is',
+                                length: 'as-is'
+                            });
+                            
+                            enhancedContent = await rewriter.rewrite(initialContent);
+                            rewriter.destroy();
+                        } else {
+                            // Fallback to using LanguageModel for enhancement
+                            enhancedContent = await promptSession.prompt(
+                                `Please improve and polish the following text without changing its main points. Make it more engaging and professional:\n\n${initialContent}`
+                            );
+                        }
+                    } catch (e) {
+                        // Fallback to using LanguageModel for enhancement
+                        enhancedContent = await promptSession.prompt(
+                            `Please improve and polish the following text without changing its main points. Make it more engaging and professional:\n\n${initialContent}`
+                        );
+                    }
+                } else {
+                    // Fallback to using LanguageModel for enhancement
+                    enhancedContent = await promptSession.prompt(
+                        `Please improve and polish the following text without changing its main points. Make it more engaging and professional:\n\n${initialContent}`
+                    );
+                }
+                
+                showResult('enhancedResult', enhancedContent);
+                
+                document.getElementById('contentProgressBar').style.width = '100%';
+                showStatus('contentStatus', 'Content generated and enhanced!', 'success');
+                
+                // Show results container
+                document.getElementById('contentResults').style.display = 'block';
+                
+                // Hide progress after a delay
+                setTimeout(() => {
+                    document.getElementById('contentProgressContainer').style.display = 'none';
+                }, 1500);
+                
+            } catch (error) {
+                document.getElementById('contentProgressContainer').style.display = 'none';
+                showStatus('contentStatus', `Workflow failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Check support for multilingual customer support workflow
+        async function checkSupportSupport() {
+            showStatus('supportStatus', 'Checking API support...', 'loading');
+            
+            try {
+                // Check Language Detector
+                if (!('LanguageDetector' in self)) {
+                    throw new Error('Language Detector API not available');
+                }
+                const detectorStatus = await LanguageDetector.availability();
+                
+                // Check Translator
+                if (!('Translator' in self)) {
+                    throw new Error('Translator API not available');
+                }
+                // Note: we'll use a generic language pair for the check
+                const translatorStatus = await Translator.availability({
+                    sourceLanguage: 'en',
+                    targetLanguage: 'de'
+                });
+                
+                // Check Language Model
+                if (!('LanguageModel' in self)) {
+                    throw new Error('Language Model API not available');
+                }
+                const promptStatus = await LanguageModel.availability();
+                
+                showStatus('supportStatus', 
+                    `API Status: Language Detector (${detectorStatus}), ` +
+                    `Translator (${translatorStatus}), ` +
+                    `Language Model (${promptStatus})`, 
+                    'success');
+                
+            } catch (error) {
+                showStatus('supportStatus', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Run the multilingual customer support workflow
+        async function runSupportWorkflow() {
+            const customerText = document.getElementById('customerMessage').value;
+            const supportContext = document.getElementById('supportContext').value;
+            
+            if (!customerText.trim()) {
+                showStatus('supportStatus', 'Please enter a customer message', 'error');
+                return;
+            }
+            
+            // Show progress container
+            document.getElementById('supportProgressContainer').style.display = 'block';
+            document.getElementById('supportProgressBar').style.width = '0%';
+            
+            try {
+                showStatus('supportStatus', 'Starting support workflow...', 'loading');
+                document.getElementById('supportResults').style.display = 'none';
+                
+                // Step 1: Detect language
+                showStatus('supportStatus', 'Step 1: Detecting language...', 'loading');
+                document.getElementById('supportProgressBar').style.width = '10%';
+                
+                if (!('LanguageDetector' in self)) {
+                    throw new Error('Language Detector API not available');
+                }
+                
+                const detector = await LanguageDetector.create();
+                const detectionResults = await detector.detect(customerText);
+                
+                const detectedLang = detectionResults[0].detectedLanguage;
+                const confidence = detectionResults[0].confidence;
+                
+                showResult('customerLanguageResult', `Detected language: ${detectedLang} (confidence: ${(confidence * 100).toFixed(1)}%)`);
+                document.getElementById('supportProgressBar').style.width = '25%';
+                
+                // Step 2: Translate to English for processing
+                showStatus('supportStatus', 'Step 2: Translating to English...', 'loading');
+                
+                if (!('Translator' in self)) {
+                    throw new Error('Translator API not available');
+                }
+                
+                let translatedQuery = customerText;
+                
+                if (detectedLang !== 'en') {
+                    const translator = await Translator.create({
+                        sourceLanguage: detectedLang,
+                        targetLanguage: 'en'
+                    });
+                    
+                    translatedQuery = await translator.translate(customerText);
+                    translator.destroy();
+                }
+                
+                showResult('translatedQueryResult', translatedQuery);
+                document.getElementById('supportProgressBar').style.width = '50%';
+                
+                // Step 3: Generate support response in English
+                showStatus('supportStatus', 'Step 3: Generating support response...', 'loading');
+                
+                if (!('LanguageModel' in self)) {
+                    throw new Error('Language Model API not available');
+                }
+                
+                const languageModel = await LanguageModel.create({
+                    systemPrompt: supportContext
+                });
+                
+                const englishResponse = await languageModel.prompt(
+                    `Customer query: ${translatedQuery}\n\nPlease provide a helpful response.`
+                );
+                
+                showResult('supportResponseResult', englishResponse);
+                document.getElementById('supportProgressBar').style.width = '75%';
+                
+                // Step 4: Translate response back to customer's language
+                showStatus('supportStatus', 'Step 4: Translating response back...', 'loading');
+                
+                let finalResponse = englishResponse;
+                
+                if (detectedLang !== 'en') {
+                    const responseTranslator = await Translator.create({
+                        sourceLanguage: 'en',
+                        targetLanguage: detectedLang
+                    });
+                    
+                    finalResponse = await responseTranslator.translate(englishResponse);
+                    responseTranslator.destroy();
+                }
+                
+                showResult('translatedResponseResult', finalResponse);
+                
+                document.getElementById('supportProgressBar').style.width = '100%';
+                showStatus('supportStatus', 'Support workflow completed successfully!', 'success');
+                
+                // Show results container
+                document.getElementById('supportResults').style.display = 'block';
+                
+                // Clean up resources
+                detector.destroy();
+                languageModel.destroy();
+                
+                // Hide progress after a delay
+                setTimeout(() => {
+                    document.getElementById('supportProgressContainer').style.display = 'none';
+                }, 1500);
+                
+            } catch (error) {
+                document.getElementById('supportProgressContainer').style.display = 'none';
+                showStatus('supportStatus', `Workflow failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Check support for document processing workflow
+        async function checkDocumentSupport() {
+            showStatus('documentStatus', 'Checking API support...', 'loading');
+            
+            try {
+                // Check Summarizer
+                if (!('Summarizer' in self)) {
+                    throw new Error('Summarizer API not available');
+                }
+                const summarizerStatus = await Summarizer.availability();
+                
+                // Check Language Model
+                if (!('LanguageModel' in self)) {
+                    throw new Error('Language Model API not available');
+                }
+                const promptStatus = await LanguageModel.availability();
+                
+                showStatus('documentStatus', 
+                    `API Status: Summarizer (${summarizerStatus}), ` +
+                    `Language Model (${promptStatus})`, 
+                    'success');
+                
+            } catch (error) {
+                showStatus('documentStatus', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Run the document processing workflow
+        async function runDocumentWorkflow() {
+            const documentText = document.getElementById('documentText').value;
+            const query = document.getElementById('documentQuery').value;
+            
+            if (!documentText.trim()) {
+                showStatus('documentStatus', 'Please enter document text', 'error');
+                return;
+            }
+            
+            if (!query.trim()) {
+                showStatus('documentStatus', 'Please enter a question or information to extract', 'error');
+                return;
+            }
+            
+            // Show progress container
+            document.getElementById('documentProgressContainer').style.display = 'block';
+            document.getElementById('documentProgressBar').style.width = '0%';
+            
+            try {
+                showStatus('documentStatus', 'Starting document workflow...', 'loading');
+                document.getElementById('documentResults').style.display = 'none';
+                
+                // Step 1: Summarize document
+                showStatus('documentStatus', 'Step 1: Summarizing document...', 'loading');
+                document.getElementById('documentProgressBar').style.width = '25%';
+                
+                if (!('Summarizer' in self)) {
+                    throw new Error('Summarizer API not available');
+                }
+                
+                const summarizer = await Summarizer.create({
+                    type: 'key-points',
+                    format: 'plain-text',
+                    length: 'medium'
+                });
+                
+                const summary = await summarizer.summarize(documentText);
+                showResult('documentSummaryResult', summary);
+                
+                document.getElementById('documentProgressBar').style.width = '50%';
+                
+                // Step 2: Extract information or answer question using the Language Model
+                showStatus('documentStatus', 'Step 2: Extracting information...', 'loading');
+                
+                if (!('LanguageModel' in self)) {
+                    throw new Error('Language Model API not available');
+                }
+                
+                const languageModel = await LanguageModel.create({
+                    systemPrompt: "You are a helpful AI assistant that answers questions based on provided document text. Be accurate and concise in your answers."
+                });
+                
+                const answer = await languageModel.prompt(
+                    `Document: ${documentText}\n\nSummary: ${summary}\n\nQuestion: ${query}\n\nPlease answer based on the document.`
+                );
+                
+                showResult('documentAnswerResult', answer);
+                
+                document.getElementById('documentProgressBar').style.width = '100%';
+                showStatus('documentStatus', 'Document processing completed successfully!', 'success');
+                
+                // Show results container
+                document.getElementById('documentResults').style.display = 'block';
+                
+                // Clean up resources
+                summarizer.destroy();
+                languageModel.destroy();
+                
+                // Hide progress after a delay
+                setTimeout(() => {
+                    document.getElementById('documentProgressContainer').style.display = 'none';
+                }, 1500);
+                
+            } catch (error) {
+                document.getElementById('documentProgressContainer').style.display = 'none';
+                showStatus('documentStatus', `Workflow failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Initialize page
+        window.addEventListener('load', function() {
+            // Check initial support for all APIs
+            console.log('Checking API availability...');
+            console.log('LanguageModel available:', 'LanguageModel' in self);
+            console.log('Summarizer available:', 'Summarizer' in self);
+            console.log('Translator available:', 'Translator' in self);
+            console.log('LanguageDetector available:', 'LanguageDetector' in self);
+        });
+    </script>
+</body>
+</html>
