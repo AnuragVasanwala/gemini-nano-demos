@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chrome 138 Gemini Nano Built-in APIs Demo</title>
+    <meta name="description" content="Interactive demonstrations of individual Chrome Gemini Nano APIs. Try text generation, summarization, translation and other AI capabilities running directly in your browser.">
+    <meta name="keywords" content="Gemini Nano, Chrome, AI, On-device AI, Machine Learning, Translation, Summarization, LLM, API Demos">
+    <meta name="author" content="Anurag Vasanwala">
+    <meta property="og:title" content="Chrome Gemini Nano API Demos">
+    <meta property="og:description" content="Try Chrome's built-in Gemini Nano AI APIs directly in your browser">
+    <meta property="og:image" content="https://anuragvasanwala.github.io/gemini-nano-demos/assets/gemini-nano-featured-image.webp">
+    <meta property="og:url" content="https://anuragvasanwala.github.io/gemini-nano-demos/gemini-nano-samples.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://anuragvasanwala.github.io/gemini-nano-demos/gemini-nano-samples.html">
     <style>
         :root {
             --primary: #4285f4;
@@ -523,29 +532,104 @@
     .view-code-btn:hover {
         background-color: rgba(66, 133, 244, 0.2);
     }
+    
+    /* Navigation and footer styles */
+    header {
+        text-align: center;
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    .nav-links {
+        display: flex;
+        justify-content: center;
+        gap: var(--spacing-md);
+        margin: var(--spacing-md) 0;
+        flex-wrap: wrap;
+    }
+    
+    .nav-link {
+        color: var(--primary);
+        text-decoration: none;
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: var(--radius-sm);
+        transition: background-color 0.2s;
+        font-weight: 500;
+    }
+    
+    .nav-link:hover {
+        background-color: rgba(66, 133, 244, 0.1);
+    }
+    
+    footer {
+        text-align: center;
+        margin-top: var(--spacing-xl);
+        padding-top: var(--spacing-lg);
+        border-top: 1px solid var(--border);
+        color: var(--on-surface-variant);
+        font-size: 0.9rem;
+    }
+    
+    .footer-links {
+        margin-top: var(--spacing-md);
+        font-size: 0.85rem;
+    }
+    
+    .footer-links a {
+        color: var(--primary);
+        text-decoration: none;
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+    
+    .footer-links a:hover {
+        text-decoration: underline;
+    }
+    
+    .setup-intro {
+        text-align: center;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .setup-link {
+        color: var(--primary);
+        font-weight: 500;
+        text-decoration: none;
+    }
+    
+    .setup-link:hover {
+        text-decoration: underline;
+    }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🤖 Chrome <span>Gemini Nano</span> APIs Demo</h1>
+        <header>
+            <h1>🤖 Chrome <span>Gemini Nano</span> APIs Demo</h1>
+            
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">🏠 Home</a>
+                <a href="index.html#setup" class="nav-link">⚙️ Setup & Configuration</a>
+                <a href="gemini-nano-workflows.html" class="nav-link">🔄 Workflow Demos</a>
+            </div>
+        </header>
         
         <div class="requirements">
             <h3>ℹ️ Requirements & Setup</h3>
+            <p class="setup-intro">Before using these demos, ensure your browser is properly configured:</p>
             <ul>
-                <li><strong>Chrome Version:</strong> Chrome 137+ (Dev/Canary recommended for latest features)</li>
+                <li><strong>Chrome Version:</strong> Chrome 138+ required</li>
                 <li><strong>Enable Flags:</strong> Go to <code>chrome://flags</code> and enable:
                     <ul>
-                        <li><code>Optimization Guide On Device Model</code> - Enable</li>
                         <li><code>Prompt API for Gemini Nano</code> - Enable</li>
+                        <li><code>Prompt API for Gemini Nano with Multimodal Input</code> - Enable</li>
                         <li><code>Summarization API for Gemini Nano</code> - Enable</li>
-                        <li><code>Language Detection API</code> - Enable</li>
-                        <li><code>Translation API</code> - Enable</li>
+                        <li><code>Writer API for Gemini Nano</code> - Enable</li>
+                        <li><code>Rewriter API for Gemini Nano</code> - Enable</li>
+                        <li><code>Optimization Guide On Device Model</code> - Enable</li>
                     </ul>
                 </li>
-                <li><strong>Hardware:</strong> Modern desktop/laptop with sufficient RAM (8GB+ recommended)</li>
-                <li><strong>Model Download:</strong> Gemini Nano model downloads automatically on first use</li>
-                <li><strong>API Access:</strong> APIs are accessed as global objects: <code>LanguageModel</code>, <code>Summarizer</code>, <code>Translator</code>, <code>LanguageDetector</code></li>
-                <li><strong>Note:</strong> Writer and Rewriter APIs are still experimental</li>
+                <li><strong>Component Updates:</strong> Visit <code>chrome://components</code> and update "Optimization Guide On Device Model"</li>
+                <li><strong>First Run:</strong> Models will download automatically when you first use each API</li>
+                <li><strong>For detailed setup instructions with screenshots:</strong> <a href="index.html#setup" class="setup-link">View Complete Setup Guide</a></li>
             </ul>
         </div>
         
@@ -933,6 +1017,16 @@
                 </div>
             </div>
         </div>
+        
+        <footer>
+            <p>💡 This is an educational demo showcasing Chrome's experimental Gemini Nano APIs. All processing happens locally on your device - no data is sent to the cloud.</p>
+            
+            <div class="footer-links">
+                <a href="index.html">🏠 Home</a> | 
+                <a href="gemini-nano-workflows.html">🔄 Workflow Demos</a> | 
+                <a href="index.html#setup">⚙️ Setup & Configuration</a>
+            </div>
+        </footer>
     </div>
 
     <!-- Code Snippets Modal -->
