@@ -1,0 +1,6 @@
+theme: jekyll-theme-cayman
+title: Gemini Nano Demos
+description: Interactive demos showcasing Gemini Nano API capabilities
+show_downloads: true
+github:
+  repository_url: https://github.com/AnuragVasanwala/gemini-nano-demos

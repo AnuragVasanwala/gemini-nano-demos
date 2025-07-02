@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Nano Demos</title>
+    <style>
+        :root {
+            --primary: #4285f4;
+            --primary-dark: #3367d6;
+            --secondary: #ea4335;
+            --green: #34a853;
+            --yellow: #fbbc05;
+            --surface: #ffffff;
+            --background: #f8f9fa;
+            --on-surface: #202124;
+            --on-surface-variant: #5f6368;
+            --on-primary: #ffffff;
+            --error: #d93025;
+            --warning: #f29900;
+            --success: #188038;
+            --info: #1a73e8;
+            --border: #dadce0;
+            --shadow-1: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+            --shadow-2: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+            --shadow-3: 0 2px 6px 2px rgba(60, 64, 67, 0.15), 0 1px 2px 0 rgba(60, 64, 67, 0.3);
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-xxl: 48px;
+            --font-family: "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background: var(--background);
+            color: var(--on-surface);
+            min-height: 100vh;
+            padding: var(--spacing-lg);
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        h1 {
+            color: var(--on-surface);
+            margin-bottom: var(--spacing-md);
+            font-size: 2.5rem;
+            font-weight: 500;
+        }
+        
+        h1 span {
+            color: var(--primary);
+        }
+        
+        .subtitle {
+            color: var(--on-surface-variant);
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto var(--spacing-lg);
+        }
+        
+        .feature-image {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto var(--spacing-xl);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-1);
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .demo-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-1);
+            transition: all 0.2s ease;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            color: var(--on-surface);
+            display: block;
+        }
+        
+        .demo-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary);
+        }
+        
+        .demo-card:hover {
+            box-shadow: var(--shadow-2);
+            transform: translateY(-2px);
+        }
+        
+        .demo-card h3 {
+            color: var(--primary);
+            margin-bottom: var(--spacing-md);
+            font-size: 1.25rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .demo-card p {
+            color: var(--on-surface-variant);
+            font-size: 0.95rem;
+        }
+        
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            background: var(--primary);
+            color: var(--on-primary);
+            text-decoration: none;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            margin-top: var(--spacing-lg);
+            transition: all 0.2s ease;
+        }
+        
+        .github-link:hover {
+            background: var(--primary-dark);
+            box-shadow: var(--shadow-1);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: var(--spacing-xl);
+            color: var(--on-surface-variant);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--spacing-md);
+            }
+            
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono&display=swap');
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 <span>Gemini Nano</span> Demos</h1>
+            <p class="subtitle">Explore Gemini Nano API capabilities with these interactive demos that run locally on-device.</p>
+            <img src="assets/gemini-nano-featured-image.webp" alt="Gemini Nano" class="feature-image">
+        </header>
+        
+        <div class="demo-grid">
+            <a href="gemini-nano-samples.html" class="demo-card">
+                <h3>📱 Gemini Nano API Samples</h3>
+                <p>Interactive demonstrations of individual Gemini Nano APIs including text generation, translation, summarization, and language detection.</p>
+            </a>
+            
+            <a href="gemini-nano-workflows.html" class="demo-card">
+                <h3>🔄 Gemini Nano Workflows</h3>
+                <p>Advanced integration examples showing how multiple Gemini Nano APIs can be chained together for complex workflows.</p>
+            </a>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="https://github.com/AnuragVasanwala/gemini-nano-demos" class="github-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                View on GitHub
+            </a>
+        </div>
+        
+        <footer>
+            <p>© 2025 Gemini Nano Demos. All processing happens locally on your device - no data is sent to the cloud.</p>
+        </footer>
+    </div>
+</body>
+</html>

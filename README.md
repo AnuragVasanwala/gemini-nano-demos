@@ -52,14 +52,14 @@ Experience how combining multiple Gemini Nano APIs creates powerful end-to-end s
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/gemini-nano-demos.git
+git clone https://github.com/AnuragVasanwala/gemini-nano-demos.git
 ```
 
 2. Open the HTML files in Chrome:
    - Open `gemini-nano-samples.html` to explore individual API demos
    - Open `gemini-nano-workflows.html` to see interlinked workflow examples
 
-Alternatively, you can access the demos directly through GitHub Pages at [yourusername.github.io/gemini-nano-demos](https://yourusername.github.io/gemini-nano-demos).
+Alternatively, you can access the demos directly through GitHub Pages at [anuragvasanwala.github.io/gemini-nano-demos](https://anuragvasanwala.github.io/gemini-nano-demos).
 
 ## Usage
 
