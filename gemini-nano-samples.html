@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chrome 138 Gemini Nano Built-in APIs Demo</title>
+    <style>
+        :root {
+            --primary: #4285f4;
+            --primary-dark: #3367d6;
+            --secondary: #ea4335;
+            --green: #34a853;
+            --yellow: #fbbc05;
+            --surface: #ffffff;
+            --background: #f8f9fa;
+            --on-surface: #202124;
+            --on-surface-variant: #5f6368;
+            --on-primary: #ffffff;
+            --error: #d93025;
+            --warning: #f29900;
+            --success: #188038;
+            --info: #1a73e8;
+            --border: #dadce0;
+            --shadow-1: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+            --shadow-2: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+            --shadow-3: 0 2px 6px 2px rgba(60, 64, 67, 0.15), 0 1px 2px 0 rgba(60, 64, 67, 0.3);
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-xxl: 48px;
+            --font-family: "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background: var(--background);
+            color: var(--on-surface);
+            min-height: 100vh;
+            padding: var(--spacing-lg);
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--on-surface);
+            margin-bottom: var(--spacing-xl);
+            font-size: 2.25rem;
+            font-weight: 500;
+        }
+        
+        h1 span {
+            color: var(--primary);
+        }
+        
+        .api-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .api-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-1);
+            transition: all 0.2s ease;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .api-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary);
+        }
+        
+        .api-card:hover {
+            box-shadow: var(--shadow-2);
+            transform: translateY(-2px);
+        }
+        
+        .api-title {
+            color: var(--on-surface);
+            margin-bottom: var(--spacing-md);
+            font-size: 1.25rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .api-description {
+            color: var(--on-surface-variant);
+            margin-bottom: var(--spacing-lg);
+            font-size: 0.9rem;
+        }
+        
+        .input-group {
+            margin-bottom: var(--spacing-md);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-weight: 500;
+            color: var(--on-surface);
+            font-size: 0.9rem;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            font-family: var(--font-family);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            color: var(--on-surface);
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        button {
+            background: var(--primary);
+            color: var(--on-primary);
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            min-height: 36px;
+        }
+        
+        button:hover {
+            background: var(--primary-dark);
+            box-shadow: var(--shadow-1);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        button.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        button.secondary:hover {
+            background: rgba(66, 133, 244, 0.05);
+        }
+        
+        .result {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-md);
+            margin-top: var(--spacing-md);
+            min-height: 60px;
+            white-space: pre-wrap;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--on-surface);
+        }
+        
+        .status {
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-sm);
+            font-size: 0.875rem;
+            font-weight: 400;
+        }
+        
+        .status.loading {
+            background: rgba(251, 188, 5, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(251, 188, 5, 0.3);
+        }
+        
+        .status.success {
+            background: rgba(52, 168, 83, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(52, 168, 83, 0.3);
+        }
+        
+        .status.error {
+            background: rgba(234, 67, 53, 0.1);
+            color: var(--error);
+            border: 1px solid rgba(234, 67, 53, 0.3);
+        }
+        
+        .status.info {
+            background: rgba(66, 133, 244, 0.1);
+            color: var(--info);
+            border: 1px solid rgba(66, 133, 244, 0.3);
+        }
+        
+        .requirements {
+            background: rgba(251, 188, 5, 0.1);
+            border: 1px solid rgba(251, 188, 5, 0.3);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .requirements h3 {
+            color: var(--warning);
+            margin-bottom: var(--spacing-md);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .requirements ul {
+            color: var(--on-surface);
+            padding-left: var(--spacing-lg);
+        }
+        
+        .requirements li {
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .requirements code {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.85em;
+        }
+        
+        .use-cases {
+            background: rgba(66, 133, 244, 0.1);
+            border: 1px solid rgba(66, 133, 244, 0.3);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+        
+        .use-cases h3 {
+            color: var(--primary);
+            margin-bottom: var(--spacing-md);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+        
+        .use-case {
+            background: var(--surface);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--primary);
+            box-shadow: var(--shadow-1);
+        }
+        
+        .use-case h4 {
+            color: var(--on-surface);
+            margin-bottom: var(--spacing-sm);
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .use-case p {
+            color: var(--on-surface-variant);
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        
+        .loading-progress {
+            height: 4px;
+            width: 100%;
+            background-color: rgba(66, 133, 244, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .loading-progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .api-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: var(--spacing-md);
+        }
+        
+        /* Emoji Styling */
+        .emoji {
+            font-size: 1.2em;
+            line-height: 1;
+            margin-right: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--spacing-md);
+            }
+            
+            .api-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.75rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+        
+        /* Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono&display=swap');
+    /* Modal Styles */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .modal {
+        background-color: var(--surface);
+        width: 80%;
+        max-width: 800px;
+        max-height: 80vh;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-3);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .modal-header {
+        padding: var(--spacing-md) var(--spacing-lg);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .modal-title {
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: var(--on-surface);
+    }
+    
+    .modal-close {
+        background: transparent;
+        border: none;
+        color: var(--on-surface-variant);
+        font-size: 1.5rem;
+        cursor: pointer;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+    
+    .modal-close:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .modal-body {
+        padding: var(--spacing-lg);
+        overflow-y: auto;
+    }
+    
+    .modal-footer {
+        padding: var(--spacing-md) var(--spacing-lg);
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: flex-end;
+        gap: var(--spacing-sm);
+    }
+    
+    .code-snippet {
+        background-color: #f5f5f5;
+        border-radius: var(--radius-sm);
+        padding: var(--spacing-md);
+        overflow-x: auto;
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.85rem;
+        line-height: 1.5;
+        color: #333;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .code-snippet pre {
+        margin: 0;
+    }
+    
+    .code-section {
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .code-section h4 {
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .code-description {
+        margin-bottom: var(--spacing-md);
+        font-size: 0.9rem;
+    }
+
+    /* Use cases in API cards */
+    .api-use-cases {
+        margin-top: var(--spacing-md);
+        padding-top: var(--spacing-md);
+        border-top: 1px solid var(--border);
+    }
+
+    .api-use-case {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: var(--spacing-sm);
+        font-size: 0.85rem;
+    }
+
+    .api-use-case span {
+        margin-right: var(--spacing-sm);
+    }
+
+    .api-use-case-title {
+        font-weight: 500;
+        font-size: 0.9rem;
+        margin-bottom: var(--spacing-xs);
+        color: var(--on-surface);
+    }
+
+    .view-code-btn {
+        margin-top: var(--spacing-sm);
+        display: inline-flex;
+        align-items: center;
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 0.8rem;
+        background-color: rgba(66, 133, 244, 0.1);
+        color: var(--primary);
+        border: 1px solid rgba(66, 133, 244, 0.3);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+    }
+
+    .view-code-btn:hover {
+        background-color: rgba(66, 133, 244, 0.2);
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Chrome <span>Gemini Nano</span> APIs Demo</h1>
+        
+        <div class="requirements">
+            <h3>ℹ️ Requirements & Setup</h3>
+            <ul>
+                <li><strong>Chrome Version:</strong> Chrome 137+ (Dev/Canary recommended for latest features)</li>
+                <li><strong>Enable Flags:</strong> Go to <code>chrome://flags</code> and enable:
+                    <ul>
+                        <li><code>Optimization Guide On Device Model</code> - Enable</li>
+                        <li><code>Prompt API for Gemini Nano</code> - Enable</li>
+                        <li><code>Summarization API for Gemini Nano</code> - Enable</li>
+                        <li><code>Language Detection API</code> - Enable</li>
+                        <li><code>Translation API</code> - Enable</li>
+                    </ul>
+                </li>
+                <li><strong>Hardware:</strong> Modern desktop/laptop with sufficient RAM (8GB+ recommended)</li>
+                <li><strong>Model Download:</strong> Gemini Nano model downloads automatically on first use</li>
+                <li><strong>API Access:</strong> APIs are accessed as global objects: <code>LanguageModel</code>, <code>Summarizer</code>, <code>Translator</code>, <code>LanguageDetector</code></li>
+                <li><strong>Note:</strong> Writer and Rewriter APIs are still experimental</li>
+            </ul>
+        </div>
+        
+        <div class="api-grid">
+            <!-- Translator API -->
+            <div class="api-card">
+                <h3 class="api-title">🌐 Translator API</h3>
+                <p class="api-description">Translate text between different languages using local AI models</p>
+                
+                <div class="input-group">
+                    <label for="translateText">Text to Translate:</label>
+                    <textarea id="translateText" placeholder="Enter text to translate...">Hello, how are you today?</textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label for="sourceLanguage">Source Language:</label>
+                    <select id="sourceLanguage">
+                        <option value="de">German</option>
+                        <option value="en">English</option>
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                        <option value="it">Italian</option>
+                        <option value="ja">Japanese</option>
+                        <option value="ko">Korean</option>
+                        <option value="pt">Portuguese</option>
+                        <option value="ru">Russian</option>
+                        <option value="zh">Chinese</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="targetLanguage">Target Language:</label>
+                    <select id="targetLanguage">
+                        <option value="de">German</option>
+                        <option value="en">English</option>
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                        <option value="it">Italian</option>
+                        <option value="ja">Japanese</option>
+                        <option value="ko">Korean</option>
+                        <option value="pt">Portuguese</option>
+                        <option value="ru">Russian</option>
+                        <option value="zh">Chinese</option>
+                    </select>
+                </div>
+
+                <div id="translateProgressContainer" class="loading-progress" style="display: none;">
+                    <div id="translateProgressBar" class="loading-progress-bar" style="width: 0%;"></div>
+                </div>
+                
+                <div class="button-group">
+                    <button onclick="translateText()">🌍 Translate</button>
+                    <button onclick="checkTranslatorSupport()" class="secondary">🔍 Check Support</button>
+                </div>
+                
+                <div id="translateStatus"></div>
+                <div id="translateResult" class="result"></div>
+                
+                <div class="api-use-cases">
+                    <div class="api-use-case-title">🚀 Use Cases</div>
+                    <div class="api-use-case">
+                        <span>📱</span> Real-time translation of chat messages and user content
+                    </div>
+                    <div class="api-use-case">
+                        <span>📧</span> Translating emails and business communications
+                    </div>
+                    <div class="api-use-case">
+                        <span>📄</span> Localizing documents and content for global audiences
+                    </div>
+                    <div class="api-use-case">
+                        <span>🌍</span> Creating multi-language support for web applications
+                    </div>
+                    <button class="view-code-btn" onclick="showCodeSnippet('translator')">
+                        💻 View Code Sample
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Language Detector API -->
+            <div class="api-card">
+                <h3 class="api-title">🔍 Language Detector API</h3>
+                <p class="api-description">Automatically detect the language of input text</p>
+                
+                <div class="input-group">
+                    <label for="detectText">Text to Analyze:</label>
+                    <textarea id="detectText" placeholder="Enter text in any language...">Bonjour, comment allez-vous? Je suis très heureux de vous rencontrer.</textarea>
+                </div>
+                
+                <div id="detectProgressContainer" class="loading-progress" style="display: none;">
+                    <div id="detectProgressBar" class="loading-progress-bar" style="width: 0%;"></div>
+                </div>
+                
+                <div class="button-group">
+                    <button onclick="detectLanguage()">🔍 Detect Language</button>
+                    <button onclick="checkDetectorSupport()" class="secondary">🔍 Check Support</button>
+                </div>
+                
+                <div id="detectStatus"></div>
+                <div id="detectResult" class="result"></div>
+                
+                <div class="api-use-cases">
+                    <div class="api-use-case-title">🚀 Use Cases</div>
+                    <div class="api-use-case">
+                        <span>🌐</span> Auto-detection of user language for content personalization
+                    </div>
+                    <div class="api-use-case">
+                        <span>🔤</span> Sorting content and documents by language
+                    </div>
+                    <div class="api-use-case">
+                        <span>📝</span> Routing support requests to appropriate language teams
+                    </div>
+                    <div class="api-use-case">
+                        <span>📊</span> Analytics for multi-language user engagement
+                    </div>
+                    <button class="view-code-btn" onclick="showCodeSnippet('detector')">
+                        💻 View Code Sample
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Summarizer API -->
+            <div class="api-card">
+                <h3 class="api-title">📝 Summarizer API</h3>
+                <p class="api-description">Generate concise summaries of long text content</p>
+                
+                <div class="input-group">
+                    <label for="summarizeText">Text to Summarize:</label>
+                    <textarea id="summarizeText" placeholder="Enter long text to summarize...">Artificial intelligence (AI) is intelligence demonstrated by machines, in contrast to the natural intelligence displayed by humans and animals. Leading AI textbooks define the field as the study of "intelligent agents": any device that perceives its environment and takes actions that maximize its chance of successfully achieving its goals. Colloquially, the term "artificial intelligence" is often used to describe machines that mimic "cognitive" functions that humans associate with the human mind, such as "learning" and "problem solving". As machines become increasingly capable, tasks considered to require "intelligence" are often removed from the definition of AI, a phenomenon known as the AI effect.</textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label for="summaryType">Summary Type:</label>
+                    <select id="summaryType">
+                        <option value="key-points">Key Points</option>
+                        <option value="tldr">TL;DR</option>
+                        <option value="teaser">Teaser</option>
+                        <option value="headline">Headline</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="summaryLength">Summary Length:</label>
+                    <select id="summaryLength">
+                        <option value="short">Short</option>
+                        <option value="medium">Medium</option>
+                        <option value="long">Long</option>
+                    </select>
+                </div>
+                
+                <div id="summarizeProgressContainer" class="loading-progress" style="display: none;">
+                    <div id="summarizeProgressBar" class="loading-progress-bar" style="width: 0%;"></div>
+                </div>
+                
+                <div class="button-group">
+                    <button onclick="summarizeText()">📝 Summarize</button>
+                    <button onclick="checkSummarizerSupport()" class="secondary">🔍 Check Support</button>
+                </div>
+                
+                <div id="summarizeStatus"></div>
+                <div id="summarizeResult" class="result"></div>
+                
+                <div class="api-use-cases">
+                    <div class="api-use-case-title">🚀 Use Cases</div>
+                    <div class="api-use-case">
+                        <span>📰</span> Creating executive summaries of long articles
+                    </div>
+                    <div class="api-use-case">
+                        <span>📚</span> Generating chapter summaries for study materials
+                    </div>
+                    <div class="api-use-case">
+                        <span>📑</span> Creating preview snippets for search results
+                    </div>
+                    <div class="api-use-case">
+                        <span>📊</span> Condensing research papers and technical documents
+                    </div>
+                    <button class="view-code-btn" onclick="showCodeSnippet('summarizer')">
+                        💻 View Code Sample
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Writer API -->
+            <div class="api-card">
+                <h3 class="api-title">✍️ Writer API</h3>
+                <p class="api-description">Generate new content based on prompts and writing tasks</p>
+                
+                <div class="input-group">
+                    <label for="writerPrompt">Writing Prompt:</label>
+                    <textarea id="writerPrompt" placeholder="Describe what you want to write about...">Write a professional email to schedule a meeting with a client about a new project proposal.</textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label for="writerTone">Tone:</label>
+                    <select id="writerTone">
+                        <option value="formal">Formal</option>
+                        <option value="casual">Casual</option>
+                        <option value="neutral">Neutral</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="writerLength">Length:</label>
+                    <select id="writerLength">
+                        <option value="short">Short</option>
+                        <option value="medium">Medium</option>
+                        <option value="long">Long</option>
+                    </select>
+                </div>
+                
+                <div id="writerProgressContainer" class="loading-progress" style="display: none;">
+                    <div id="writerProgressBar" class="loading-progress-bar" style="width: 0%;"></div>
+                </div>
+                
+                <div class="button-group">
+                    <button onclick="generateText()">✍️ Generate</button>
+                    <button onclick="checkWriterSupport()" class="secondary">🔍 Check Support</button>
+                </div>
+                
+                <div id="writerStatus"></div>
+                <div id="writerResult" class="result"></div>
+                
+                <div class="api-use-cases">
+                    <div class="api-use-case-title">🚀 Use Cases</div>
+                    <div class="api-use-case">
+                        <span>✉️</span> Generating professional emails and correspondence
+                    </div>
+                    <div class="api-use-case">
+                        <span>📝</span> Creating content for blog posts and articles
+                    </div>
+                    <div class="api-use-case">
+                        <span>💼</span> Drafting business proposals and reports
+                    </div>
+                    <div class="api-use-case">
+                        <span>🎓</span> Creating educational content and study materials
+                    </div>
+                    <button class="view-code-btn" onclick="showCodeSnippet('writer')">
+                        💻 View Code Sample
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Rewriter API -->
+            <div class="api-card">
+                <h3 class="api-title">🔄 Rewriter API</h3>
+                <p class="api-description">Rewrite existing text with different tone, length, or style</p>
+                
+                <div class="input-group">
+                    <label for="rewriteText">Text to Rewrite:</label>
+                    <textarea id="rewriteText" placeholder="Enter text to rewrite...">Hey there! I wanted to reach out about the meeting we discussed. Can we set something up for next week? Let me know what works for you!</textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label for="rewriteTone">New Tone:</label>
+                    <select id="rewriteTone">
+                        <option value="more-formal">More Formal</option>
+                        <option value="more-casual">More Casual</option>
+                        <option value="as-is">Keep Current Tone</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="rewriteLength">New Length:</label>
+                    <select id="rewriteLength">
+                        <option value="shorter">Shorter</option>
+                        <option value="longer">Longer</option>
+                        <option value="as-is">Keep Current Length</option>
+                    </select>
+                </div>
+                
+                <div id="rewriteProgressContainer" class="loading-progress" style="display: none;">
+                    <div id="rewriteProgressBar" class="loading-progress-bar" style="width: 0%;"></div>
+                </div>
+                
+                <div class="button-group">
+                    <button onclick="rewriteText()">🔄 Rewrite</button>
+                    <button onclick="checkRewriterSupport()" class="secondary">🔍 Check Support</button>
+                </div>
+                
+                <div id="rewriteStatus"></div>
+                <div id="rewriteResult" class="result"></div>
+                
+                <div class="api-use-cases">
+                    <div class="api-use-case-title">🚀 Use Cases</div>
+                    <div class="api-use-case">
+                        <span>🔄</span> Converting casual text to professional tone
+                    </div>
+                    <div class="api-use-case">
+                        <span>📏</span> Adjusting content length for different platforms
+                    </div>
+                    <div class="api-use-case">
+                        <span>✏️</span> Improving clarity and readability of text
+                    </div>
+                    <div class="api-use-case">
+                        <span>🎯</span> Adapting content for different target audiences
+                    </div>
+                    <button class="view-code-btn" onclick="showCodeSnippet('rewriter')">
+                        💻 View Code Sample
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Prompt API -->
+            <div class="api-card">
+                <h3 class="api-title">💬 Prompt API</h3>
+                <p class="api-description">General-purpose AI interaction with custom prompts</p>
+                
+                <div class="input-group">
+                    <label for="promptText">Your Prompt:</label>
+                    <textarea id="promptText" placeholder="Enter your prompt...">Explain quantum computing in simple terms that a high school student would understand.</textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label for="promptSystem">System Message (optional):</label>
+                    <textarea id="promptSystem" placeholder="System instructions..." style="height: 60px;">You are a helpful assistant that provides clear and concise explanations.</textarea>
+                </div>
+                
+                <div id="promptProgressContainer" class="loading-progress" style="display: none;">
+                    <div id="promptProgressBar" class="loading-progress-bar" style="width: 0%;"></div>
+                </div>
+                
+                <div class="button-group">
+                    <button onclick="sendPrompt()">📤 Send Prompt</button>
+                    <button onclick="checkPromptSupport()" class="secondary">🔍 Check Support</button>
+                    <button onclick="destroyPromptSession()" class="secondary">🗑️ Reset Session</button>
+                </div>
+                
+                <div id="promptStatus"></div>
+                <div id="promptResult" class="result"></div>
+                
+                <div class="api-use-cases">
+                    <div class="api-use-case-title">🚀 Use Cases</div>
+                    <div class="api-use-case">
+                        <span>💬</span> Creating AI chat assistants with customized behavior
+                    </div>
+                    <div class="api-use-case">
+                        <span>🧠</span> Building knowledge base Q&A with local data
+                    </div>
+                    <div class="api-use-case">
+                        <span>🔍</span> Text analysis and information extraction
+                    </div>
+                    <div class="api-use-case">
+                        <span>🛠️</span> Creating conversational tools and utilities
+                    </div>
+                    <button class="view-code-btn" onclick="showCodeSnippet('prompt')">
+                        💻 View Code Sample
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="use-cases">
+            <h3>💡 Use Cases & Applications</h3>
+            <div class="use-case-grid">
+                <div class="use-case">
+                    <h4>📧 Email Enhancement</h4>
+                    <p>Improve email drafts with better tone, grammar, and clarity. Generate professional responses and translations.</p>
+                </div>
+                <div class="use-case">
+                    <h4>✍🏻 Content Creation</h4>
+                    <p>Generate blog posts, articles, and marketing copy. Summarize research and create different content variations.</p>
+                </div>
+                <div class="use-case">
+                    <h4>🌐 Multilingual Support</h4>
+                    <p>Break language barriers with real-time translation and language detection for global communication.</p>
+                </div>
+                <div class="use-case">
+                    <h4>📋 Document Processing</h4>
+                    <p>Summarize long documents, proofread content, and rewrite text for different audiences.</p>
+                </div>
+                <div class="use-case">
+                    <h4>🎓 Educational Tools</h4>
+                    <p>Create study materials, explain complex topics, and assist with writing assignments.</p>
+                </div>
+                <div class="use-case">
+                    <h4>💼 Business Communication</h4>
+                    <p>Enhance professional communication, create meeting summaries, and improve document quality.</p>
+                </div>
+                <div class="use-case">
+                    <h4>♿ Accessibility</h4>
+                    <p>Provide writing assistance for users with disabilities and language learners.</p>
+                </div>
+                <div class="use-case">
+                    <h4>🔒 Privacy-First AI</h4>
+                    <p>Process sensitive content locally without sending data to external servers.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Snippets Modal -->
+    <div id="codeModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Code Sample</h3>
+                <button class="modal-close" onclick="closeModal()">✖️</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be dynamically inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeModal()">Close</button>
+                <button onclick="copyCode()" class="secondary">📋 Copy Code</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables for API sessions
+        let promptSession = null;
+        let summarizerSession = null;
+        let writerSession = null;
+        let rewriterSession = null;
+        let translatorSession = null;
+        let languageDetector = null;
+        
+        // Modal handling functions
+        function showModal(title, content) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBody').innerHTML = content;
+            document.getElementById('codeModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+        
+        function closeModal() {
+            document.getElementById('codeModal').style.display = 'none';
+            document.body.style.overflow = ''; // Re-enable scrolling
+        }
+        
+        function copyCode() {
+            const codeElements = document.querySelectorAll('#modalBody .code-snippet');
+            let allCode = '';
+            
+            codeElements.forEach(el => {
+                allCode += el.textContent + '\n\n';
+            });
+            
+            navigator.clipboard.writeText(allCode.trim())
+                .then(() => {
+                    alert('Code copied to clipboard!');
+                })
+                .catch(err => {
+                    console.error('Failed to copy code: ', err);
+                });
+        }
+        
+        // Show code snippet for specific API
+        function showCodeSnippet(apiType) {
+            let title = '';
+            let content = '';
+            
+            switch (apiType) {
+                case 'translator':
+                    title = '🌐 Translator API Code Sample';
+                    content = `
+                        <div class="code-section">
+                            <h4>Basic Translation</h4>
+                            <div class="code-description">
+                                Translate text between languages using the Translator API
+                            </div>
+                            <div class="code-snippet">
+                                <pre>
+// Check if the API is available
+if (!('Translator' in self)) {
+    console.error('Translator API is not available');
+    return;
+}
+
+async function translateExample() {
+    try {
+        // Check API availability
+        const status = await Translator.availability({
+            sourceLanguage: 'en',
+            targetLanguage: 'es'
+        });
+        
+        if (status === 'ready') {
+            // Create a translator session
+            const translator = await Translator.create({
+                sourceLanguage: 'en',
+                targetLanguage: 'es'
+            });
+            
+            // Translate text
+            const result = await translator.translate('Hello, how are you today?');
+            console.log('Translated text:', result);
+            
+            // Clean up
+            translator.destroy();
+        } else {
+            console.log('Translation model status:', status);
+        }
+    } catch (error) {
+        console.error('Translation error:', error);
+    }
+}</pre>
+                            </div>
+                        </div>
+                        
+                        <div class="code-section">
+                            <h4>Advanced Usage with Progress Monitor</h4>
+                            <div class="code-description">
+                                Track model download progress and handle different states
+                            </div>
+                            <div class="code-snippet">
+                                <pre>
+async function translateWithMonitor() {
+    // Create with progress monitor
+    const translator = await Translator.create({
+        sourceLanguage: 'en',
+        targetLanguage: 'ja',
+        monitor(m) {
+            m.addEventListener("downloadprogress", e => {
+                const percent = Math.round(e.loaded * 100);
+                console.log('Download progress: ' + percent + '%');
+            });
+        }
+    });
+    
+    // Handle batch translations
+    const texts = ['Hello', 'Good morning', 'Thank you'];
+    const results = await Promise.all(
+        texts.map(text => translator.translate(text))
+    );
+    
+    console.log('Batch translation results:', results);
+    translator.destroy();
+}</pre>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'detector':
+                    title = '🔍 Language Detector API Code Sample';
+                    content = `
+                        <div class="code-section">
+                            <h4>Basic Language Detection</h4>
+                            <div class="code-description">
+                                Detect the language of a text sample
+                            </div>
+                            <div class="code-snippet">
+                                <pre>
+// Check if the API is available
+if (!('LanguageDetector' in self)) {
+    console.error('Language Detector API is not available');
+    return;
+}
+
+async function detectLanguageExample() {
+    try {
+        // Check API availability
+        const status = await LanguageDetector.availability();
+        
+        if (status === 'ready') {
+            // Create a detector session
+            const detector = await LanguageDetector.create();
+            
+            // Detect language
+            const text = "Bonjour, comment allez-vous?";
+            const results = await detector.detect(text);
+            
+            // Process results (sorted by confidence)
+            results.forEach((result, index) => {
+                console.log(
+                    'Detection #' + (index + 1) + ': ' + result.detectedLanguage + ' ' +
+                    '(confidence: ' + (result.confidence * 100).toFixed(1) + '%)'
+                );
+            });
+            
+            // Clean up
+            detector.destroy();
+        } else {
+            console.log('Detector model status:', status);
+        }
+    } catch (error) {
+        console.error('Detection error:', error);
+    }
+}</pre>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'summarizer':
+                    title = '📝 Summarizer API Code Sample';
+                    content = `
+                        <div class="code-section">
+                            <h4>Basic Text Summarization</h4>
+                            <div class="code-description">
+                                Generate a concise summary of a longer text
+                            </div>
+                            <div class="code-snippet">
+                                <pre>
+// Check if the API is available
+if (!('Summarizer' in self)) {
+    console.error('Summarizer API is not available');
+    return;
+}
+
+async function summarizeTextExample() {
+    try {
+        // Check API availability
+        const status = await Summarizer.availability();
+        
+        if (status === 'ready') {
+            // Create a summarizer session with options
+            const summarizer = await Summarizer.create({
+                type: 'key-points',  // Options: 'key-points', 'tldr', 'headline', 'teaser'
+                format: 'plain-text',
+                length: 'medium'     // Options: 'short', 'medium', 'long'
+            });
+            
+            // Text to summarize
+            const longText = "Artificial intelligence (AI) is intelligence demonstrated by " +
+                "machines, in contrast to the natural intelligence displayed by humans and animals. " +
+                "Leading AI textbooks define the field as the study of 'intelligent agents': any " +
+                "device that perceives its environment and takes actions that maximize its chance " +
+                "of successfully achieving its goals. [...]";
+            
+            // Generate summary
+            const summary = await summarizer.summarize(longText);
+            console.log('Generated summary:', summary);
+            
+            // Clean up
+            summarizer.destroy();
+        } else {
+            console.log('Summarizer model status:', status);
+        }
+    } catch (error) {
+        console.error('Summarization error:', error);
+    }
+}</pre>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'writer':
+                    title = '✍️ Writer API Code Sample';
+                    content = `
+                        <div class="code-section">
+                            <h4>Content Generation</h4>
+                            <div class="code-description">
+                                Generate new content based on a prompt
+                            </div>
+                            <div class="code-snippet">
+                                <pre>
+// Check if the API is available (Note: Writer API is experimental)
+if (!('Writer' in self)) {
+    console.error('Writer API is not available');
+    return;
+}
+
+async function generateContentExample() {
+    try {
+        // Check API availability
+        const status = await Writer.availability();
+        
+        if (status === 'ready') {
+            // Create a writer session with options
+            const writer = await Writer.create({
+                tone: 'formal',    // Options: 'formal', 'casual', 'neutral'
+                length: 'medium'   // Options: 'short', 'medium', 'long'
+            });
+            
+            // Writing prompt
+            const prompt = "Write a professional email to schedule a meeting with a client";
+            
+            // Generate content
+            const content = await writer.write(prompt);
+            console.log('Generated content:', content);
+            
+            // Clean up
+            writer.destroy();
+        } else {
+            console.log('Writer model status:', status);
+        }
+    } catch (error) {
+        console.error('Content generation error:', error);
+    }
+}</pre>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'rewriter':
+                    title = '🔄 Rewriter API Code Sample';
+                    content = `
+                        <div class="code-section">
+                            <h4>Text Rewriting</h4>
+                            <div class="code-description">
+                                Rewrite existing text with different tone or length
+                            </div>
+                            <div class="code-snippet">
+                                <pre>
+// Check if the API is available (Note: Rewriter API is experimental)
+if (!('Rewriter' in self)) {
+    console.error('Rewriter API is not available');
+    return;
+}
+
+async function rewriteTextExample() {
+    try {
+        // Check API availability
+        const status = await Rewriter.availability();
+        
+        if (status === 'ready') {
+            // Create a rewriter session with options
+            const rewriter = await Rewriter.create({
+                tone: 'more-formal',   // Options: 'more-formal', 'more-casual', 'as-is'
+                length: 'longer'       // Options: 'shorter', 'longer', 'as-is'
+            });
+            
+            // Text to rewrite
+            const originalText = "Hey there! I wanted to reach out about the meeting. " +
+                                "Can we set something up for next week?";
+            
+            // Rewrite text
+            const rewrittenText = await rewriter.rewrite(originalText);
+            console.log('Original:', originalText);
+            console.log('Rewritten:', rewrittenText);
+            
+            // Clean up
+            rewriter.destroy();
+        } else {
+            console.log('Rewriter model status:', status);
+        }
+    } catch (error) {
+        console.error('Rewriting error:', error);
+    }
+}</pre>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'prompt':
+                    title = '💬 Prompt API Code Sample';
+                    content = `
+                        <div class="code-section">
+                            <h4>Basic Prompt Interaction</h4>
+                            <div class="code-description">
+                                Send prompts to the language model and get responses
+                            </div>
+                            <div class="code-snippet">
+                                <pre>
+// Check if the API is available
+if (!('LanguageModel' in self)) {
+    console.error('Language Model API is not available');
+    return;
+}
+
+async function promptExample() {
+    try {
+        // Check API availability
+        const status = await LanguageModel.availability();
+        
+        if (status === 'ready') {
+            // Create a language model session with a system prompt
+            const model = await LanguageModel.create({
+                systemPrompt: "You are a helpful assistant that provides clear and concise explanations."
+            });
+            
+            // Send a prompt and get response
+            const prompt = "Explain quantum computing in simple terms";
+            const response = await model.prompt(prompt);
+            console.log('AI response:', response);
+            
+            // Continue the conversation with follow-up questions
+            const followUp = "Can you provide a real-world application example?";
+            const followUpResponse = await model.prompt(followUp);
+            console.log('Follow-up response:', followUpResponse);
+            
+            // Clean up when done with the conversation
+            model.destroy();
+        } else {
+            console.log('Language model status:', status);
+        }
+    } catch (error) {
+        console.error('Prompt error:', error);
+    }
+}</pre>
+                            </div>
+                        </div>
+                        
+                        <div class="code-section">
+                            <h4>Advanced Usage with Model Download Monitoring</h4>
+                            <div class="code-description">
+                                Handle model download process and customize prompt behavior
+                            </div>
+                            <div class="code-snippet">
+                                <pre>
+async function advancedPromptExample() {
+    // Create with download progress monitor
+    const model = await LanguageModel.create({
+        systemPrompt: "You are an expert assistant specialized in technology explanations.",
+        monitor(m) {
+            m.addEventListener("downloadprogress", e => {
+                const percent = Math.round(e.loaded * 100);
+                console.log('Model download progress: ' + percent + '%');
+            });
+        }
+    });
+    
+    try {
+        // Use model features
+        const response = await model.prompt("Explain how neural networks work", {
+            maxOutputTokens: 200  // Optional: Limit response length
+        });
+        
+        console.log('Response:', response);
+    } catch (error) {
+        console.error('Error:', error);
+    } finally {
+        // Always clean up resources when done
+        model.destroy();
+    }
+}</pre>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            showModal(title, content);
+        }
+
+        // Utility function to show status
+        function showStatus(elementId, message, type = 'info') {
+            const statusElement = document.getElementById(elementId);
+            statusElement.className = `status ${type}`;
+            statusElement.textContent = message;
+        }
+
+        // Utility function to show result
+        function showResult(elementId, result) {
+            const resultElement = document.getElementById(elementId);
+            resultElement.textContent = result;
+        }
+
+        // Translator API Functions
+        async function checkTranslatorSupport() {
+            showStatus('translateStatus', 'Checking translator support...', 'loading');
+            
+            try {
+                if (!('Translator' in self)) {
+                    throw new Error('Translator API not available');
+                }
+                // Get selected source and target languages
+                const sourceLanguage = document.getElementById('sourceLanguage').value;
+                const targetLanguage = document.getElementById('targetLanguage').value;
+                // Pass required arguments to availability
+                const status = await Translator.availability({
+                    sourceLanguage,
+                    targetLanguage
+                });
+                showStatus('translateStatus', `Translator availability: ${status}`, 'success');
+                showResult('translateResult', `Translation API status: ${status}\n\nAvailable statuses:\n- "ready": Ready to use\n- "downloadable": Model needs to be downloaded\n- "downloading": Model is downloading\n- "unavailable": Not supported`);
+            } catch (error) {
+                showStatus('translateStatus', `Error: ${error.message}`, 'error');
+                showResult('translateResult', `Translation API not available. Please enable the Translation API flag in chrome://flags\n\nRequired flags:\n- Optimization Guide On Device Model\n- Translation API for Gemini Nano`);
+            }
+        }
+
+        async function translateText() {
+            const text = document.getElementById('translateText').value;
+            const sourceLang = document.getElementById('sourceLanguage').value;
+            const targetLang = document.getElementById('targetLanguage').value;
+            
+            if (!text.trim()) {
+                showStatus('translateStatus', 'Please enter text to translate', 'error');
+                return;
+            }
+            
+            if (!('Translator' in self)) {
+                showStatus('translateStatus', 'Translator API not available', 'error');
+                return;
+            }
+            
+            showStatus('translateStatus', 'Checking translator availability...', 'loading');
+            
+            try {                
+                showStatus('translateStatus', 'Translating...', 'loading');
+                
+                const translator = await Translator.create({
+                    sourceLanguage: sourceLang,
+                    targetLanguage: targetLang
+                });
+                
+                const result = await translator.translate(text);
+                showStatus('translateStatus', 'Translation completed!', 'success');
+                showResult('translateResult', `Original (${sourceLang}): ${text}\n\nTranslated (${targetLang}): ${result}`);
+                
+                // Clean up session
+                translator.destroy();
+            } catch (error) {
+                showStatus('translateStatus', `Translation failed: ${error.message}`, 'error');
+                showResult('translateResult', `Translation failed: ${error.message}\n\nPlease check if the API is enabled and the language pair is supported.`);
+            }
+        }
+
+        // Language Detector API Functions
+        async function checkDetectorSupport() {
+            showStatus('detectStatus', 'Checking language detector support...', 'loading');
+            
+            try {
+                if (!('LanguageDetector' in self)) {
+                    throw new Error('Language Detector API not available');
+                }
+                
+                const status = await LanguageDetector.availability();
+                showStatus('detectStatus', `Language detector availability: ${status}`, 'success');
+                showResult('detectResult', `Language Detection API status: ${status}\n\nThis API can detect the language of input text automatically.`);
+            } catch (error) {
+                showStatus('detectStatus', `Error: ${error.message}`, 'error');
+                showResult('detectResult', 'Language Detector API not available. Please enable the Language Detection API flag in chrome://flags');
+            }
+        }
+
+        async function detectLanguage() {
+            const text = document.getElementById('detectText').value;
+            
+            if (!text.trim()) {
+                showStatus('detectStatus', 'Please enter text to analyze', 'error');
+                return;
+            }
+            
+            if (!('LanguageDetector' in self)) {
+                showStatus('detectStatus', 'Language Detector API not available', 'error');
+                return;
+            }
+            
+            showStatus('detectStatus', 'Detecting language...', 'loading');
+            
+            try {
+                const status = await LanguageDetector.availability();
+                
+                if (status === "unavailable") {
+                    showStatus('detectStatus', 'Language detector unavailable', 'error');
+                    showResult('detectResult', 'Language detection model is not available.');
+                    return;
+                }
+                
+                if (status === "downloadable" || status === "downloading") {
+                    // Attempt to trigger model download by creating a detector session with monitor
+                    try {
+                        let lastPercent = 0;
+                        await LanguageDetector.create({
+                            monitor(m) {
+                                m.addEventListener("downloadprogress", e => {
+                                    const percent = Math.round(e.loaded * 100);
+                                    if (percent !== lastPercent) {
+                                        showStatus('detectStatus', `Model downloading: ${percent}%`, 'info');
+                                        lastPercent = percent;
+                                    }
+                                });
+                            }
+                        });
+                        showStatus('detectStatus', `Model is downloading. Please wait a moment and try again.`, 'info');
+                        showResult('detectResult', `Language detection model is being downloaded. Please retry after the download completes.`);
+                    } catch (downloadErr) {
+                        showStatus('detectStatus', `Model download failed: ${downloadErr.message}`, 'error');
+                        showResult('detectResult', `Failed to start model download: ${downloadErr.message}`);
+                    }
+                    return;
+                }
+                
+                const detector = await LanguageDetector.create();
+                const results = await detector.detect(text);
+                
+                let output = `Text: "${text}"\n\nDetected Languages:\n`;
+                
+                results.forEach((result, index) => {
+                    output += `${index + 1}. ${result.detectedLanguage} (confidence: ${(result.confidence * 100).toFixed(1)}%)\n`;
+                });
+                
+                showStatus('detectStatus', 'Language detection completed!', 'success');
+                showResult('detectResult', output);
+                
+                // Clean up
+                detector.destroy();
+            } catch (error) {
+                showStatus('detectStatus', `Detection failed: ${error.message}`, 'error');
+                showResult('detectResult', `Language detection failed: ${error.message}`);
+            }
+        }
+
+        // Summarizer API Functions
+        async function checkSummarizerSupport() {
+            showStatus('summarizeStatus', 'Checking summarizer support...', 'loading');
+            
+            try {
+                if (!('Summarizer' in self)) {
+                    throw new Error('Summarizer API not available');
+                }
+                
+                const status = await Summarizer.availability();
+                showStatus('summarizeStatus', `Summarizer availability: ${status}`, 'success');
+                showResult('summarizeResult', `Summarization API status: ${status}\n\nThis API can generate concise summaries of long text content.`);
+            } catch (error) {
+                showStatus('summarizeStatus', `Error: ${error.message}`, 'error');
+                showResult('summarizeResult', 'Summarizer API not available. Please enable Summarization API flag in chrome://flags');
+            }
+        }
+
+        async function summarizeText() {
+            const text = document.getElementById('summarizeText').value;
+            const type = document.getElementById('summaryType').value;
+            const length = document.getElementById('summaryLength').value;
+            
+            if (!text.trim()) {
+                showStatus('summarizeStatus', 'Please enter text to summarize', 'error');
+                return;
+            }
+            
+            if (!('Summarizer' in self)) {
+                showStatus('summarizeStatus', 'Summarizer API not available', 'error');
+                return;
+            }
+            
+            showStatus('summarizeStatus', 'Checking summarizer availability...', 'loading');
+            
+            try {
+                const status = await Summarizer.availability();
+                
+                if (status === "unavailable") {
+                    showStatus('summarizeStatus', 'Summarizer model unavailable', 'error');
+                    showResult('summarizeResult', 'Summarization model is not available.');
+                    return;
+                }
+                
+                if (status === "downloadable" || status === "downloading") {
+                    // Attempt to trigger model download by creating a summarizer session with monitor
+                    try {
+                        let lastPercent = 0;
+                        await Summarizer.create({
+                            type: type,
+                            format: 'plain-text',
+                            length: length,
+                            monitor(m) {
+                                m.addEventListener("downloadprogress", e => {
+                                    const percent = Math.round(e.loaded * 100);
+                                    if (percent !== lastPercent) {
+                                        showStatus('summarizeStatus', `Model downloading: ${percent}%`, 'info');
+                                        lastPercent = percent;
+                                    }
+                                });
+                            }
+                        });
+                        showStatus('summarizeStatus', `Model is downloading. Please wait a moment and try again.`, 'info');
+                        showResult('summarizeResult', `Summarization model is being downloaded. Please retry after the download completes.`);
+                    } catch (downloadErr) {
+                        showStatus('summarizeStatus', `Model download failed: ${downloadErr.message}`, 'error');
+                        showResult('summarizeResult', `Failed to start model download: ${downloadErr.message}`);
+                    }
+                    return;
+                }
+                
+                showStatus('summarizeStatus', 'Generating summary...', 'loading');
+                
+                const summarizer = await Summarizer.create({
+                    type: type,
+                    format: 'plain-text',
+                    length: length
+                });
+                
+                const summary = await summarizer.summarize(text);
+                showStatus('summarizeStatus', 'Summary generated!', 'success');
+                showResult('summarizeResult', `Summary (${type}, ${length}):\n\n${summary}\n\n--- Statistics ---\nOriginal length: ${text.length} characters\nSummary length: ${summary.length} characters\nCompression ratio: ${((1 - summary.length/text.length) * 100).toFixed(1)}%`);
+                
+                // Clean up
+                summarizer.destroy();
+            } catch (error) {
+                showStatus('summarizeStatus', `Summarization failed: ${error.message}`, 'error');
+                showResult('summarizeResult', `Summarization failed: ${error.message}`);
+            }
+        }
+
+        // Language Model (Prompt) API Functions
+        async function checkPromptSupport() {
+            showStatus('promptStatus', 'Checking language model support...', 'loading');
+            
+            try {
+                if (!('LanguageModel' in self)) {
+                    throw new Error('Language Model API not available');
+                }
+                
+                const status = await LanguageModel.availability();
+                showStatus('promptStatus', `Language Model availability: ${status}`, 'success');
+                showResult('promptResult', `Prompt API status: ${status}\n\nThis is the general-purpose AI model for custom prompts and conversations.`);
+            } catch (error) {
+                showStatus('promptStatus', `Error: ${error.message}`, 'error');
+                showResult('promptResult', 'Language Model API not available. Please enable Prompt API flag in chrome://flags');
+            }
+        }
+
+        async function sendPrompt() {
+            const prompt = document.getElementById('promptText').value;
+            const systemMessage = document.getElementById('promptSystem').value;
+            
+            if (!prompt.trim()) {
+                showStatus('promptStatus', 'Please enter a prompt', 'error');
+                return;
+            }
+            
+            if (!('LanguageModel' in self)) {
+                showStatus('promptStatus', 'Language Model API not available', 'error');
+                return;
+            }
+            
+            showStatus('promptStatus', 'Checking model availability...', 'loading');
+            
+            try {
+                const status = await LanguageModel.availability();
+                
+                if (status === "unavailable") {
+                    showStatus('promptStatus', 'Language model unavailable', 'error');
+                    showResult('promptResult', 'Language model is not available on this device.');
+                    return;
+                }
+                
+                if (status === "downloadable" || status === "downloading") {
+                    // Attempt to trigger model download by creating a prompt session with monitor
+                    try {
+                        let lastPercent = 0;
+                        const options = {};
+                        if (systemMessage.trim()) {
+                            options.systemPrompt = systemMessage.trim();
+                        }
+                        options.monitor = function(m) {
+                            m.addEventListener("downloadprogress", e => {
+                                const percent = Math.round(e.loaded * 100);
+                                if (percent !== lastPercent) {
+                                    showStatus('promptStatus', `Model downloading: ${percent}%`, 'info');
+                                    lastPercent = percent;
+                                }
+                            });
+                        };
+                        await LanguageModel.create(options);
+                        showStatus('promptStatus', `Model is downloading. Please wait a moment and try again.`, 'info');
+                        showResult('promptResult', `Language model is being downloaded. Please retry after the download completes.`);
+                    } catch (downloadErr) {
+                        showStatus('promptStatus', `Model download failed: ${downloadErr.message}`, 'error');
+                        showResult('promptResult', `Failed to start model download: ${downloadErr.message}`);
+                    }
+                    return;
+                }
+                
+                showStatus('promptStatus', 'Generating response...', 'loading');
+                
+                // Create session if it doesn't exist
+                if (!promptSession) {
+                    const options = {};
+                    if (systemMessage.trim()) {
+                        options.systemPrompt = systemMessage.trim();
+                    }
+                    promptSession = await LanguageModel.create(options);
+                }
+                
+                const result = await promptSession.prompt(prompt);
+                showStatus('promptStatus', 'Response generated!', 'success');
+                showResult('promptResult', `Prompt: ${prompt}\n\nResponse:\n${result}`);
+            } catch (error) {
+                showStatus('promptStatus', `Prompt failed: ${error.message}`, 'error');
+                showResult('promptResult', `Prompt failed: ${error.message}`);
+            }
+        }
+
+        async function destroyPromptSession() {
+            if (promptSession) {
+                promptSession.destroy();
+                promptSession = null;
+                showStatus('promptStatus', 'Session reset', 'info');
+                showResult('promptResult', 'Prompt session has been reset. A new session will be created on next prompt.');
+            } else {
+                showStatus('promptStatus', 'No active session', 'info');
+            }
+        }
+
+        // Writer API Functions (Note: This API may not be available in current Chrome versions)
+        async function checkWriterSupport() {
+            showStatus('writerStatus', 'Checking writer support...', 'loading');
+            
+            try {
+                if (!('Writer' in self)) {
+                    throw new Error('Writer API not available yet');
+                }
+                
+                const status = await Writer.availability();
+                showStatus('writerStatus', `Writer availability: ${status}`, 'success');
+                showResult('writerResult', `Writer API status: ${status}`);
+            } catch (error) {
+                showStatus('writerStatus', `Writer API not available`, 'info');
+                showResult('writerResult', 'Writer API is not yet available in current Chrome versions. This is a placeholder for future implementation.\n\nYou can use the Prompt API for similar writing tasks.');
+            }
+        }
+
+        async function generateText() {
+            const prompt = document.getElementById('writerPrompt').value;
+            const tone = document.getElementById('writerTone').value;
+            const length = document.getElementById('writerLength').value;
+            
+            if (!prompt.trim()) {
+                showStatus('writerStatus', 'Please enter a writing prompt', 'error');
+                return;
+            }
+            
+            if (!('Writer' in self)) {
+                showStatus('writerStatus', 'Writer API not available', 'error');
+                showResult('writerResult', 'Writer API is not yet implemented. Please use the Prompt API for writing assistance.');
+                return;
+            }
+            
+            showStatus('writerStatus', 'Checking writer availability...', 'loading');
+            
+            try {
+                const status = await Writer.availability();
+                
+                if (status === "unavailable") {
+                    showStatus('writerStatus', 'Writer model unavailable', 'error');
+                    showResult('writerResult', 'Writer model is not available.');
+                    return;
+                }
+                
+                if (status === "downloadable" || status === "downloading") {
+                    try {
+                        let lastPercent = 0;
+                        await Writer.create({
+                            tone: tone,
+                            length: length,
+                            monitor(m) {
+                                m.addEventListener("downloadprogress", e => {
+                                    const percent = Math.round(e.loaded * 100);
+                                    if (percent !== lastPercent) {
+                                        showStatus('writerStatus', `Model downloading: ${percent}%`, 'info');
+                                        lastPercent = percent;
+                                    }
+                                });
+                            }
+                        });
+                        showStatus('writerStatus', `Model is downloading. Please wait a moment and try again.`, 'info');
+                        showResult('writerResult', `Writer model is being downloaded. Please retry after the download completes.`);
+                    } catch (downloadErr) {
+                        showStatus('writerStatus', `Model download failed: ${downloadErr.message}`, 'error');
+                        showResult('writerResult', `Failed to start model download: ${downloadErr.message}`);
+                    }
+                    return;
+                }
+                
+                showStatus('writerStatus', 'Generating text...', 'loading');
+                
+                const writer = await Writer.create({
+                    tone: tone,
+                    length: length
+                });
+                const result = await writer.write(prompt);
+                showStatus('writerStatus', 'Text generated!', 'success');
+                showResult('writerResult', result);
+                writer.destroy();
+            } catch (error) {
+                showStatus('writerStatus', `Writer failed: ${error.message}`, 'error');
+                showResult('writerResult', `Writer failed: ${error.message}`);
+            }
+        }
+
+        // Rewriter API Functions (Note: This API may not be available in current Chrome versions)
+        async function checkRewriterSupport() {
+            showStatus('rewriteStatus', 'Checking rewriter support...', 'loading');
+            
+            try {
+                if (!('Rewriter' in self)) {
+                    throw new Error('Rewriter API not available yet');
+                }
+                
+                const status = await Rewriter.availability();
+                showStatus('rewriteStatus', `Rewriter availability: ${status}`, 'success');
+                showResult('rewriteResult', `Rewriter API status: ${status}`);
+            } catch (error) {
+                showStatus('rewriteStatus', `Rewriter API not available`, 'info');
+                showResult('rewriteResult', 'Rewriter API is not yet available in current Chrome versions. This is a placeholder for future implementation.\n\nYou can use the Prompt API for rewriting tasks.');
+            }
+        }
+
+        async function rewriteText() {
+            const text = document.getElementById('rewriteText').value;
+            const tone = document.getElementById('rewriteTone').value;
+            const length = document.getElementById('rewriteLength').value;
+            
+            if (!text.trim()) {
+                showStatus('rewriteStatus', 'Please enter text to rewrite', 'error');
+                return;
+            }
+            
+            if (!('Rewriter' in self)) {
+                showStatus('rewriteStatus', 'Rewriter API not available', 'error');
+                showResult('rewriteResult', 'Rewriter API is not yet implemented. Please use the Prompt API for rewriting tasks.');
+                return;
+            }
+            
+            showStatus('rewriteStatus', 'Checking rewriter availability...', 'loading');
+            
+            try {
+                const status = await Rewriter.availability();
+                
+                if (status === "unavailable") {
+                    showStatus('rewriteStatus', 'Rewriter model unavailable', 'error');
+                    showResult('rewriteResult', 'Rewriter model is not available.');
+                    return;
+                }
+                
+                if (status === "downloadable" || status === "downloading") {
+                    try {
+                        let lastPercent = 0;
+                        await Rewriter.create({
+                            tone: tone,
+                            length: length,
+                            monitor(m) {
+                                m.addEventListener("downloadprogress", e => {
+                                    const percent = Math.round(e.loaded * 100);
+                                    if (percent !== lastPercent) {
+                                        showStatus('rewriteStatus', `Model downloading: ${percent}%`, 'info');
+                                        lastPercent = percent;
+                                    }
+                                });
+                            }
+                        });
+                        showStatus('rewriteStatus', `Model is downloading. Please wait a moment and try again.`, 'info');
+                        showResult('rewriteResult', `Rewriter model is being downloaded. Please retry after the download completes.`);
+                    } catch (downloadErr) {
+                        showStatus('rewriteStatus', `Model download failed: ${downloadErr.message}`, 'error');
+                        showResult('rewriteResult', `Failed to start model download: ${downloadErr.message}`);
+                    }
+                    return;
+                }
+                
+                showStatus('rewriteStatus', 'Rewriting text...', 'loading');
+                
+                const rewriter = await Rewriter.create({
+                    tone: tone,
+                    length: length
+                });
+                const result = await rewriter.rewrite(text);
+                showStatus('rewriteStatus', 'Text rewritten!', 'success');
+                showResult('rewriteResult', result);
+                rewriter.destroy();
+            } catch (error) {
+                showStatus('rewriteStatus', `Rewriter failed: ${error.message}`, 'error');
+                showResult('rewriteResult', `Rewriter failed: ${error.message}`);
+            }
+        }
+
+        // Initialize page
+        window.addEventListener('load', function() {
+            // Check initial support for all APIs
+            console.log('Checking API availability...');
+            console.log('LanguageModel available:', 'LanguageModel' in self);
+            console.log('Summarizer available:', 'Summarizer' in self);
+            console.log('Translator available:', 'Translator' in self);
+            console.log('LanguageDetector available:', 'LanguageDetector' in self);
+            
+            // Setup modal close on outside click
+            const modal = document.getElementById('codeModal');
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
