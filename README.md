@@ -25,6 +25,8 @@ Explore each of Chrome's Gemini Nano APIs with interactive examples:
 
 Experience how combining multiple Gemini Nano APIs creates powerful end-to-end solutions:
 
+#### Basic Workflows:
+
 1. **Universal Text Processor** 🌐📝
    - Detects language → Translates to target language → Summarizes content
    - Perfect for processing international content efficiently
@@ -40,6 +42,28 @@ Experience how combining multiple Gemini Nano APIs creates powerful end-to-end s
 4. **Document Analysis & Q&A** 📝💬
    - Summarizes document → Extracts specific information based on queries
    - Ideal for research, legal document analysis, and information extraction
+
+#### Advanced Workflows:
+
+5. **Smart Reading Assistant** 📚🧠
+   - Detects language → Processes content based on selected mode (summary, simplified, expert, study questions)
+   - Allows follow-up questions on the processed content
+   - Perfect for students, researchers, and lifelong learners
+
+6. **Knowledge Explorer** 🔎🧩
+   - Analyzes concepts → Generates explanations, examples, and context → Creates connections to related topics
+   - Provides deep context without leaving your current page
+   - Ideal for research, education, and knowledge work
+
+7. **Multilingual Content Creator** 🌐✍️
+   - Creates content → Optimizes for cross-cultural understanding → Translates to multiple languages
+   - Generates culturally appropriate content for global audiences
+   - Valuable for global businesses, content creators, and educators
+
+8. **Smart Note-Taking Assistant** 📝📊
+   - Processes raw notes → Extracts action items and decisions → Organizes into structured formats
+   - Transforms unstructured meeting or lecture notes into actionable information
+   - Perfect for students, professionals, and anyone who takes notes
 
 ## Getting Started
 
@@ -112,10 +136,17 @@ self.LanguageModel     // Direct prompting interface
 
 ### Combined Workflows
 
+#### Basic Workflows
 - **News Processing**: Automatically translate, summarize, and extract key points from international news
 - **Customer Support**: Handle multilingual inquiries with automated detection, translation, and response generation
 - **Content Creation**: Generate drafts and polish them with appropriate tone and style adjustments
 - **Document Analysis**: Extract specific information from lengthy documents with summarization and targeted queries
+
+#### Advanced Workflows
+- **Smart Reading**: Transform complex content into accessible formats (summaries, simplified explanations, expert analysis)
+- **Knowledge Exploration**: Get in-depth explanations, examples, and connections between concepts
+- **Multilingual Publishing**: Create content once and adapt it for multiple languages and cultures
+- **Meeting Intelligence**: Convert raw meeting notes into structured action items, decisions, and follow-ups
 
 ## Contributing
 
