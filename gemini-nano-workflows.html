@@ -730,6 +730,331 @@ The WHO's mandate includes advocating for universal healthcare, monitoring publi
             </div>
         </div>
         
+        <h2 style="text-align: center; margin-top: var(--spacing-xxl); margin-bottom: var(--spacing-lg);">🚀 Advanced Workflow Integrations</h2>
+        
+        <div class="workflow-grid">
+            <!-- Advanced Workflow 1: Smart Reading Assistant -->
+            <div class="workflow-card">
+                <h3 class="workflow-title">📚 Smart Reading Assistant</h3>
+                <p class="workflow-description">Convert complex text into more accessible formats: summary, simplified explanation, or expert analysis. Helps efficiently consume and understand content.</p>
+                
+                <div class="workflow-diagram">
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">🔍</span>
+                        Detect Language
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">📝</span>
+                        Process Content
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">🧠</span>
+                        Generate View
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="readingText">Text Content:</label>
+                    <textarea id="readingText" placeholder="Paste text that you want to process..." style="height: 150px;">Quantum computing is a rapidly-emerging technology that harnesses the laws of quantum mechanics to solve problems too complex for classical computers. By using quantum bits or 'qubits', quantum computers can process enormous amounts of information with unprecedented efficiency. Unlike classical bits, qubits can exist in multiple states simultaneously due to superposition. Additionally, qubits can be entangled, meaning the state of one qubit can depend on the state of another, regardless of distance. These properties enable quantum computers to perform parallel computations and solve certain problems exponentially faster than classical computers.</textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label for="readingMode">Reading Mode:</label>
+                    <select id="readingMode">
+                        <option value="summary">Key Points Summary</option>
+                        <option value="simple">Simplified Explanation (ELI5)</option>
+                        <option value="expert">Expert-Level Analysis</option>
+                        <option value="questions">Generate Study Questions</option>
+                    </select>
+                </div>
+                
+                <div id="readingProgressContainer" class="loading-progress" style="display: none;">
+                    <div id="readingProgressBar" class="loading-progress-bar" style="width: 0%;"></div>
+                </div>
+                
+                <div class="button-group">
+                    <button onclick="runReadingAssistant()">📚 Process Content</button>
+                    <button onclick="checkReadingSupport()" class="secondary">🔍 Check API Support</button>
+                </div>
+                
+                <div id="readingStatus" class="status" style="display: none;"></div>
+                
+                <div id="readingResults" class="result-container" style="display: none;">
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>🔍</span> Step 1: Language Detection
+                        </div>
+                        <div id="readingLanguageResult" class="result-content"></div>
+                    </div>
+                    
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>📝</span> Step 2: Processed Content
+                        </div>
+                        <div id="readingContentResult" class="result-content"></div>
+                    </div>
+                    
+                    <div class="result-step" id="readingFollowupContainer" style="display: none;">
+                        <div class="result-step-title">
+                            <span>❓</span> Follow-up Question
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="followupQuestion" placeholder="Ask a follow-up question about this content...">
+                            <button onclick="askFollowupQuestion()" style="margin-top: var(--spacing-sm);">Ask Question</button>
+                        </div>
+                        <div id="followupResult" class="result-content" style="margin-top: var(--spacing-md);"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: var(--spacing-md);">
+                    <span class="use-case-tag">Education</span>
+                    <span class="use-case-tag">Research</span>
+                    <span class="use-case-tag">Content Consumption</span>
+                    <span class="use-case-tag">Learning</span>
+                </div>
+            </div>
+            
+            <!-- Advanced Workflow 2: Context-Aware Knowledge Extension -->
+            <div class="workflow-card">
+                <h3 class="workflow-title">🔎 Knowledge Explorer</h3>
+                <p class="workflow-description">Expand your understanding of concepts without leaving the current page. Get explanations, examples, and connections for any term or topic.</p>
+                
+                <div class="workflow-diagram">
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">💬</span>
+                        Concept Analysis
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">🔄</span>
+                        Generate Context
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">🧩</span>
+                        Connect Ideas
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="contextConcept">Concept or Term:</label>
+                    <input type="text" id="contextConcept" placeholder="Enter a concept you want to explore..." value="Neural Networks">
+                </div>
+                
+                <div class="input-group">
+                    <label for="contextMode">Exploration Mode:</label>
+                    <select id="contextMode">
+                        <option value="explain">Basic Explanation</option>
+                        <option value="examples">Examples & Applications</option>
+                        <option value="related">Related Concepts</option>
+                        <option value="history">Historical Context</option>
+                    </select>
+                </div>
+                
+                <div id="contextProgressContainer" class="loading-progress" style="display: none;">
+                    <div id="contextProgressBar" class="loading-progress-bar" style="width: 0%;"></div>
+                </div>
+                
+                <div class="button-group">
+                    <button onclick="runContextExplorer()">🔍 Explore Concept</button>
+                    <button onclick="checkContextSupport()" class="secondary">🔍 Check API Support</button>
+                </div>
+                
+                <div id="contextStatus" class="status" style="display: none;"></div>
+                
+                <div id="contextResults" class="result-container" style="display: none;">
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>📖</span> Concept Explanation
+                        </div>
+                        <div id="conceptExplanationResult" class="result-content"></div>
+                    </div>
+                    
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>🔄</span> Context & Connections
+                        </div>
+                        <div id="conceptContextResult" class="result-content"></div>
+                    </div>
+                    
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>🧩</span> Related Topics
+                        </div>
+                        <div id="relatedTopicsContainer" style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm); margin-top: var(--spacing-sm);"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: var(--spacing-md);">
+                    <span class="use-case-tag">Education</span>
+                    <span class="use-case-tag">Research</span>
+                    <span class="use-case-tag">Knowledge Management</span>
+                    <span class="use-case-tag">Learning</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="workflow-grid" style="margin-top: var(--spacing-xl);">
+            <!-- Advanced Workflow 3: Multilingual Content Creator -->
+            <div class="workflow-card">
+                <h3 class="workflow-title">🌐 Multilingual Content Creator</h3>
+                <p class="workflow-description">Create content and adapt it for global audiences with cultural context, ensuring your message resonates across language barriers.</p>
+                
+                <div class="workflow-diagram">
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">✍️</span>
+                        Create Content
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">🔄</span>
+                        Optimize
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">🌐</span>
+                        Translate
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="multilingualPrompt">Content Topic/Prompt:</label>
+                    <input type="text" id="multilingualPrompt" placeholder="What do you want to create content about?" value="Benefits of regular exercise">
+                </div>
+                
+                <div class="input-group">
+                    <label for="multilingualLanguages">Target Languages:</label>
+                    <select id="multilingualLanguages" multiple size="3">
+                        <option value="es" selected>Spanish</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
+                        <option value="ja">Japanese</option>
+                        <option value="zh">Chinese</option>
+                    </select>
+                    <small style="font-size: 0.8rem; color: var(--on-surface-variant);">Hold Ctrl/Cmd to select multiple languages</small>
+                </div>
+                
+                <div id="multilingualProgressContainer" class="loading-progress" style="display: none;">
+                    <div id="multilingualProgressBar" class="loading-progress-bar" style="width: 0%;"></div>
+                </div>
+                
+                <div class="button-group">
+                    <button onclick="runMultilingualCreator()">🌐 Create & Translate</button>
+                    <button onclick="checkMultilingualSupport()" class="secondary">🔍 Check API Support</button>
+                </div>
+                
+                <div id="multilingualStatus" class="status" style="display: none;"></div>
+                
+                <div id="multilingualResults" class="result-container" style="display: none;">
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>✍️</span> Original Content (English)
+                        </div>
+                        <div id="originalContentResult" class="result-content"></div>
+                    </div>
+                    
+                    <div id="translationsContainer"></div>
+                </div>
+                
+                <div style="margin-top: var(--spacing-md);">
+                    <span class="use-case-tag">Marketing</span>
+                    <span class="use-case-tag">Content Creation</span>
+                    <span class="use-case-tag">Global Business</span>
+                    <span class="use-case-tag">Localization</span>
+                </div>
+            </div>
+            
+            <!-- Advanced Workflow 4: Smart Note-Taking Assistant -->
+            <div class="workflow-card">
+                <h3 class="workflow-title">📝 Smart Note-Taking Assistant</h3>
+                <p class="workflow-description">Transform raw meeting notes or lectures into structured, organized information with action items, key decisions, and follow-ups.</p>
+                
+                <div class="workflow-diagram">
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">📋</span>
+                        Process Notes
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">🔍</span>
+                        Extract Items
+                    </div>
+                    <div class="workflow-arrow">➡️</div>
+                    <div class="workflow-step">
+                        <span class="workflow-step-icon">📊</span>
+                        Organize
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="notesText">Raw Notes:</label>
+                    <textarea id="notesText" placeholder="Paste your raw meeting notes or lecture notes here..." style="height: 150px;">Product Team Meeting - June 30
+- discussed new feature requests from clients
+- John mentioned we need to fix the dashboard loading time
+- Sarah showed data from last quarter, conversion up 15%
+- team agreed to prioritize mobile app performance issues
+- need to follow up with design team about new UI mockups
+- decision: launch date moved to August 12
+- action items: John to investigate slow loading, Sarah to prepare report for executives
+- next steps: review UI mockups by end of week
+- next meeting scheduled for July 7</textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label for="notesFormat">Output Format:</label>
+                    <select id="notesFormat">
+                        <option value="structured">Structured Summary</option>
+                        <option value="actionItems">Action Items Only</option>
+                        <option value="decisions">Decisions & Key Points</option>
+                        <option value="outline">Hierarchical Outline</option>
+                    </select>
+                </div>
+                
+                <div id="notesProgressContainer" class="loading-progress" style="display: none;">
+                    <div id="notesProgressBar" class="loading-progress-bar" style="width: 0%;"></div>
+                </div>
+                
+                <div class="button-group">
+                    <button onclick="runNotesAssistant()">📝 Process Notes</button>
+                    <button onclick="checkNotesSupport()" class="secondary">🔍 Check API Support</button>
+                </div>
+                
+                <div id="notesStatus" class="status" style="display: none;"></div>
+                
+                <div id="notesResults" class="result-container" style="display: none;">
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>📝</span> Structured Notes
+                        </div>
+                        <div id="structuredNotesResult" class="result-content"></div>
+                    </div>
+                    
+                    <div class="result-step">
+                        <div class="result-step-title">
+                            <span>✅</span> Action Items & Next Steps
+                        </div>
+                        <div id="actionItemsResult" class="result-content"></div>
+                    </div>
+                    
+                    <div class="result-step" id="followupQuestionsContainer">
+                        <div class="result-step-title">
+                            <span>❓</span> Suggested Follow-up Questions
+                        </div>
+                        <div id="followupQuestionsResult" class="result-content"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: var(--spacing-md);">
+                    <span class="use-case-tag">Meetings</span>
+                    <span class="use-case-tag">Education</span>
+                    <span class="use-case-tag">Productivity</span>
+                    <span class="use-case-tag">Organization</span>
+                </div>
+            </div>
+        </div>
+        
         <footer>
             <p>Note: All processing happens locally on your device using Google's Gemini Nano models - no data is sent to the cloud.</p>
             <p style="margin-top: var(--spacing-sm);"><a href="gemini-nano-samples.html">← Back to Individual API Demos</a></p>
@@ -1307,6 +1632,547 @@ The WHO's mandate includes advocating for universal healthcare, monitoring publi
             }
         }
         
+        // Smart Reading Assistant functions
+        async function checkReadingSupport() {
+            showStatus('readingStatus', 'Checking API support...', 'loading');
+            
+            try {
+                // Check Language Detector
+                if (!('LanguageDetector' in self)) {
+                    throw new Error('Language Detector API not available');
+                }
+                const detectorStatus = await LanguageDetector.availability();
+                
+                // Check Language Model
+                if (!('LanguageModel' in self)) {
+                    throw new Error('Language Model API not available');
+                }
+                const promptStatus = await LanguageModel.availability();
+                
+                showStatus('readingStatus', 
+                    `API Status: Language Detector (${detectorStatus}), ` +
+                    `Language Model (${promptStatus})`, 
+                    'success');
+                
+            } catch (error) {
+                showStatus('readingStatus', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Variables to store original text and processed content for follow-up questions
+        let readingOriginalText = '';
+        let readingProcessedText = '';
+        
+        async function runReadingAssistant() {
+            const text = document.getElementById('readingText').value;
+            const mode = document.getElementById('readingMode').value;
+            
+            if (!text.trim()) {
+                showStatus('readingStatus', 'Please enter text to process', 'error');
+                return;
+            }
+            
+            // Store original text for follow-up questions
+            readingOriginalText = text;
+            
+            // Show progress container
+            document.getElementById('readingProgressContainer').style.display = 'block';
+            document.getElementById('readingProgressBar').style.width = '0%';
+            
+            try {
+                showStatus('readingStatus', 'Starting reading assistant...', 'loading');
+                document.getElementById('readingResults').style.display = 'none';
+                
+                // Step 1: Detect language
+                showStatus('readingStatus', 'Step 1: Detecting language...', 'loading');
+                document.getElementById('readingProgressBar').style.width = '25%';
+                
+                if (!('LanguageDetector' in self)) {
+                    throw new Error('Language Detector API not available');
+                }
+                
+                const detector = await LanguageDetector.create();
+                const detectionResults = await detector.detect(text);
+                
+                const detectedLang = detectionResults[0].detectedLanguage;
+                const confidence = detectionResults[0].confidence;
+                
+                showResult('readingLanguageResult', `Detected language: ${detectedLang} (confidence: ${(confidence * 100).toFixed(1)}%)`);
+                document.getElementById('readingProgressBar').style.width = '50%';
+                
+                // Step 2: Process content based on selected mode
+                showStatus('readingStatus', 'Step 2: Processing content...', 'loading');
+                
+                if (!('LanguageModel' in self)) {
+                    throw new Error('Language Model API not available');
+                }
+                
+                // Create system prompt based on mode
+                let systemPrompt = "You are a helpful reading assistant that helps users understand content better.";
+                let userPrompt = "";
+                
+                switch (mode) {
+                    case 'summary':
+                        systemPrompt += " You create concise key point summaries of text.";
+                        userPrompt = `Please provide a key points summary of the following text. Focus on the main ideas and important details only:\n\n${text}`;
+                        break;
+                    case 'simple':
+                        systemPrompt += " You explain complex topics in simple terms that anyone can understand.";
+                        userPrompt = `Please explain the following text in very simple terms, as if you're explaining to someone with no background knowledge (ELI5 - Explain Like I'm 5). Use analogies and examples to help understanding:\n\n${text}`;
+                        break;
+                    case 'expert':
+                        systemPrompt += " You provide expert-level analysis and insights about content.";
+                        userPrompt = `Please provide an expert-level analysis of the following text. Include technical details, identify underlying concepts, and provide deeper context where appropriate:\n\n${text}`;
+                        break;
+                    case 'questions':
+                        systemPrompt += " You generate thoughtful study questions to help understand content better.";
+                        userPrompt = `Please generate 5 thoughtful study questions based on the following text. These questions should help deepen understanding and encourage critical thinking about the content:\n\n${text}`;
+                        break;
+                }
+                
+                const languageModel = await LanguageModel.create({
+                    systemPrompt: systemPrompt
+                });
+                
+                const processedContent = await languageModel.prompt(userPrompt);
+                readingProcessedText = processedContent; // Store for follow-up questions
+                
+                showResult('readingContentResult', processedContent);
+                
+                document.getElementById('readingProgressBar').style.width = '100%';
+                showStatus('readingStatus', 'Content processed successfully!', 'success');
+                
+                // Show results container
+                document.getElementById('readingResults').style.display = 'block';
+                document.getElementById('readingFollowupContainer').style.display = 'block';
+                
+                // Clean up resources
+                detector.destroy();
+                
+                // Hide progress after a delay
+                setTimeout(() => {
+                    document.getElementById('readingProgressContainer').style.display = 'none';
+                }, 1500);
+                
+            } catch (error) {
+                document.getElementById('readingProgressContainer').style.display = 'none';
+                showStatus('readingStatus', `Workflow failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Function to handle follow-up questions
+        async function askFollowupQuestion() {
+            const question = document.getElementById('followupQuestion').value;
+            
+            if (!question.trim()) {
+                showStatus('readingStatus', 'Please enter a question', 'error');
+                return;
+            }
+            
+            try {
+                showStatus('readingStatus', 'Processing your question...', 'loading');
+                
+                if (!('LanguageModel' in self)) {
+                    throw new Error('Language Model API not available');
+                }
+                
+                const languageModel = await LanguageModel.create({
+                    systemPrompt: "You are a helpful reading assistant that answers questions about content. Base your answers only on the provided original text and processed content."
+                });
+                
+                const answer = await languageModel.prompt(
+                    `Original Text: ${readingOriginalText}\n\nProcessed Content: ${readingProcessedText}\n\nQuestion: ${question}\n\nPlease answer the question based on the content above.`
+                );
+                
+                showResult('followupResult', answer);
+                showStatus('readingStatus', 'Question answered!', 'success');
+                
+            } catch (error) {
+                showStatus('readingStatus', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Context-Aware Knowledge Explorer functions
+        async function checkContextSupport() {
+            showStatus('contextStatus', 'Checking API support...', 'loading');
+            
+            try {
+                // Check Language Model
+                if (!('LanguageModel' in self)) {
+                    throw new Error('Language Model API not available');
+                }
+                const promptStatus = await LanguageModel.availability();
+                
+                showStatus('contextStatus', 
+                    `API Status: Language Model (${promptStatus})`, 
+                    'success');
+                
+            } catch (error) {
+                showStatus('contextStatus', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Function to create clickable topic chip
+        function createTopicChip(topic) {
+            const chip = document.createElement('span');
+            chip.className = 'use-case-tag';
+            chip.style.cursor = 'pointer';
+            chip.textContent = topic;
+            chip.addEventListener('click', () => {
+                document.getElementById('contextConcept').value = topic;
+                runContextExplorer();
+            });
+            return chip;
+        }
+        
+        async function runContextExplorer() {
+            const concept = document.getElementById('contextConcept').value;
+            const mode = document.getElementById('contextMode').value;
+            
+            if (!concept.trim()) {
+                showStatus('contextStatus', 'Please enter a concept to explore', 'error');
+                return;
+            }
+            
+            // Show progress container
+            document.getElementById('contextProgressContainer').style.display = 'block';
+            document.getElementById('contextProgressBar').style.width = '0%';
+            
+            try {
+                showStatus('contextStatus', 'Starting context explorer...', 'loading');
+                document.getElementById('contextResults').style.display = 'none';
+                
+                if (!('LanguageModel' in self)) {
+                    throw new Error('Language Model API not available');
+                }
+                
+                document.getElementById('contextProgressBar').style.width = '33%';
+                
+                // Create system prompt based on mode
+                let systemPrompt = "You are a knowledgeable assistant that provides in-depth information about concepts and topics.";
+                let conceptPrompt = "";
+                
+                switch (mode) {
+                    case 'explain':
+                        systemPrompt += " You provide clear, comprehensive explanations of concepts.";
+                        conceptPrompt = `Please provide a clear explanation of the concept: ${concept}. Cover what it is, its importance, and its core principles.`;
+                        break;
+                    case 'examples':
+                        systemPrompt += " You provide practical examples and applications of concepts.";
+                        conceptPrompt = `Please provide practical examples and real-world applications of: ${concept}. Include specific use cases and how the concept is implemented in practice.`;
+                        break;
+                    case 'related':
+                        systemPrompt += " You identify related concepts and how they connect to the main topic.";
+                        conceptPrompt = `Please identify concepts that are related to: ${concept}. Explain how each related concept connects to the main topic and how they work together.`;
+                        break;
+                    case 'history':
+                        systemPrompt += " You provide historical context and the evolution of concepts over time.";
+                        conceptPrompt = `Please provide the historical context and evolution of: ${concept}. Include key developments, important figures, and how the concept has changed over time.`;
+                        break;
+                }
+                
+                const languageModel = await LanguageModel.create({
+                    systemPrompt: systemPrompt
+                });
+                
+                const explanation = await languageModel.prompt(conceptPrompt);
+                showResult('conceptExplanationResult', explanation);
+                
+                document.getElementById('contextProgressBar').style.width = '66%';
+                
+                // Generate additional context and connections
+                const contextPrompt = `For the concept "${concept}", please provide additional context that would help someone understand it better. Include how it relates to broader fields or domains, and any important context that wasn't covered in the main explanation.`;
+                
+                const additionalContext = await languageModel.prompt(contextPrompt);
+                showResult('conceptContextResult', additionalContext);
+                
+                document.getElementById('contextProgressBar').style.width = '100%';
+                
+                // Generate related topics as clickable chips
+                const relatedTopicsPrompt = `Please list 5 specific related topics or concepts that someone interested in "${concept}" might want to explore next. Return only the names of the topics separated by commas, no explanations.`;
+                
+                const relatedTopics = await languageModel.prompt(relatedTopicsPrompt);
+                const topicsList = relatedTopics.split(',').map(topic => topic.trim());
+                
+                const topicsContainer = document.getElementById('relatedTopicsContainer');
+                topicsContainer.innerHTML = '';
+                
+                topicsList.forEach(topic => {
+                    if (topic) {
+                        topicsContainer.appendChild(createTopicChip(topic));
+                    }
+                });
+                
+                showStatus('contextStatus', 'Context exploration completed!', 'success');
+                
+                // Show results container
+                document.getElementById('contextResults').style.display = 'block';
+                
+                // Hide progress after a delay
+                setTimeout(() => {
+                    document.getElementById('contextProgressContainer').style.display = 'none';
+                }, 1500);
+                
+            } catch (error) {
+                document.getElementById('contextProgressContainer').style.display = 'none';
+                showStatus('contextStatus', `Workflow failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Multilingual Content Creator functions
+        async function checkMultilingualSupport() {
+            showStatus('multilingualStatus', 'Checking API support...', 'loading');
+            
+            try {
+                // Check Language Model
+                if (!('LanguageModel' in self)) {
+                    throw new Error('Language Model API not available');
+                }
+                const promptStatus = await LanguageModel.availability();
+                
+                // Check Translator
+                if (!('Translator' in self)) {
+                    throw new Error('Translator API not available');
+                }
+                // Note: we'll use a generic language pair for the check
+                const translatorStatus = await Translator.availability({
+                    sourceLanguage: 'en',
+                    targetLanguage: 'es'
+                });
+                
+                showStatus('multilingualStatus', 
+                    `API Status: Language Model (${promptStatus}), ` +
+                    `Translator (${translatorStatus})`, 
+                    'success');
+                
+            } catch (error) {
+                showStatus('multilingualStatus', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function runMultilingualCreator() {
+            const prompt = document.getElementById('multilingualPrompt').value;
+            const languageSelect = document.getElementById('multilingualLanguages');
+            const selectedLanguages = Array.from(languageSelect.selectedOptions).map(option => option.value);
+            
+            if (!prompt.trim()) {
+                showStatus('multilingualStatus', 'Please enter a content prompt', 'error');
+                return;
+            }
+            
+            if (selectedLanguages.length === 0) {
+                showStatus('multilingualStatus', 'Please select at least one target language', 'error');
+                return;
+            }
+            
+            // Show progress container
+            document.getElementById('multilingualProgressContainer').style.display = 'block';
+            document.getElementById('multilingualProgressBar').style.width = '0%';
+            
+            try {
+                showStatus('multilingualStatus', 'Starting content creation...', 'loading');
+                document.getElementById('multilingualResults').style.display = 'none';
+                
+                // Step 1: Generate content in English
+                if (!('LanguageModel' in self)) {
+                    throw new Error('Language Model API not available');
+                }
+                
+                const languageModel = await LanguageModel.create({
+                    systemPrompt: "You are a skilled content writer who creates engaging, informative content. Your writing should be clear, concise, and easy to understand."
+                });
+                
+                showStatus('multilingualStatus', 'Step 1: Generating original content...', 'loading');
+                document.getElementById('multilingualProgressBar').style.width = '20%';
+                
+                const contentPrompt = `Please create a short, engaging piece of content about the following topic: ${prompt}. Keep it concise (around 150-200 words) but informative and well-structured.`;
+                const originalContent = await languageModel.prompt(contentPrompt);
+                
+                showResult('originalContentResult', originalContent);
+                document.getElementById('multilingualProgressBar').style.width = '40%';
+                
+                // Step 2: Optimize content for translation
+                showStatus('multilingualStatus', 'Step 2: Optimizing content for translation...', 'loading');
+                
+                const optimizationPrompt = `Please review and optimize the following content to ensure it will translate well to other languages. Simplify complex idioms or cultural references, use clear and direct language, and ensure the content will be appropriate across cultures:\n\n${originalContent}`;
+                const optimizedContent = await languageModel.prompt(optimizationPrompt);
+                
+                document.getElementById('multilingualProgressBar').style.width = '60%';
+                
+                // Step 3: Translate to selected languages
+                showStatus('multilingualStatus', 'Step 3: Translating content...', 'loading');
+                
+                if (!('Translator' in self)) {
+                    throw new Error('Translator API not available');
+                }
+                
+                // Clear previous translations
+                const translationsContainer = document.getElementById('translationsContainer');
+                translationsContainer.innerHTML = '';
+                
+                // Progress increment per language
+                const progressIncrement = 40 / selectedLanguages.length;
+                let currentProgress = 60;
+                
+                // Create language name mapping
+                const languageNames = {
+                    'es': 'Spanish',
+                    'fr': 'French',
+                    'de': 'German',
+                    'ja': 'Japanese',
+                    'zh': 'Chinese'
+                };
+                
+                // Translate to each selected language
+                for (const langCode of selectedLanguages) {
+                    const translator = await Translator.create({
+                        sourceLanguage: 'en',
+                        targetLanguage: langCode
+                    });
+                    
+                    const translatedContent = await translator.translate(optimizedContent);
+                    
+                    // Create a result step for this language
+                    const langName = languageNames[langCode] || langCode;
+                    const resultStep = document.createElement('div');
+                    resultStep.className = 'result-step';
+                    resultStep.innerHTML = `
+                        <div class="result-step-title">
+                            <span>🌐</span> ${langName} Translation
+                        </div>
+                        <div class="result-content">${translatedContent}</div>
+                    `;
+                    
+                    translationsContainer.appendChild(resultStep);
+                    translator.destroy();
+                    
+                    // Update progress
+                    currentProgress += progressIncrement;
+                    document.getElementById('multilingualProgressBar').style.width = `${currentProgress}%`;
+                }
+                
+                document.getElementById('multilingualProgressBar').style.width = '100%';
+                showStatus('multilingualStatus', 'Content created and translated successfully!', 'success');
+                
+                // Show results container
+                document.getElementById('multilingualResults').style.display = 'block';
+                
+                // Hide progress after a delay
+                setTimeout(() => {
+                    document.getElementById('multilingualProgressContainer').style.display = 'none';
+                }, 1500);
+                
+            } catch (error) {
+                document.getElementById('multilingualProgressContainer').style.display = 'none';
+                showStatus('multilingualStatus', `Workflow failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Smart Note-Taking Assistant functions
+        async function checkNotesSupport() {
+            showStatus('notesStatus', 'Checking API support...', 'loading');
+            
+            try {
+                // Check Language Model
+                if (!('LanguageModel' in self)) {
+                    throw new Error('Language Model API not available');
+                }
+                const promptStatus = await LanguageModel.availability();
+                
+                showStatus('notesStatus', 
+                    `API Status: Language Model (${promptStatus})`, 
+                    'success');
+                
+            } catch (error) {
+                showStatus('notesStatus', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function runNotesAssistant() {
+            const notes = document.getElementById('notesText').value;
+            const format = document.getElementById('notesFormat').value;
+            
+            if (!notes.trim()) {
+                showStatus('notesStatus', 'Please enter notes to process', 'error');
+                return;
+            }
+            
+            // Show progress container
+            document.getElementById('notesProgressContainer').style.display = 'block';
+            document.getElementById('notesProgressBar').style.width = '0%';
+            
+            try {
+                showStatus('notesStatus', 'Starting notes processing...', 'loading');
+                document.getElementById('notesResults').style.display = 'none';
+                
+                if (!('LanguageModel' in self)) {
+                    throw new Error('Language Model API not available');
+                }
+                
+                const languageModel = await LanguageModel.create({
+                    systemPrompt: "You are a professional note-taking assistant that helps organize and structure meeting notes and lectures into clear, actionable formats."
+                });
+                
+                // Step 1: Process and structure notes
+                showStatus('notesStatus', 'Step 1: Structuring notes...', 'loading');
+                document.getElementById('notesProgressBar').style.width = '33%';
+                
+                let structuredNotesPrompt = "";
+                
+                switch (format) {
+                    case 'structured':
+                        structuredNotesPrompt = `Please convert these raw notes into a well-structured summary with clear sections, headings, and bullet points:\n\n${notes}`;
+                        break;
+                    case 'actionItems':
+                        structuredNotesPrompt = `Please extract and organize all action items, tasks, and responsibilities from these notes. Format them as a task list with owners (if mentioned) and any relevant deadlines:\n\n${notes}`;
+                        break;
+                    case 'decisions':
+                        structuredNotesPrompt = `Please extract and organize all decisions, key points, and important outcomes from these notes. Format them in a clear, structured way:\n\n${notes}`;
+                        break;
+                    case 'outline':
+                        structuredNotesPrompt = `Please convert these raw notes into a hierarchical outline with main topics, subtopics, and supporting points. Use proper outline formatting with numbers and letters:\n\n${notes}`;
+                        break;
+                }
+                
+                const structuredNotes = await languageModel.prompt(structuredNotesPrompt);
+                showResult('structuredNotesResult', structuredNotes);
+                
+                document.getElementById('notesProgressBar').style.width = '66%';
+                
+                // Step 2: Extract action items and next steps
+                showStatus('notesStatus', 'Step 2: Extracting action items...', 'loading');
+                
+                const actionItemsPrompt = `Please extract only the action items, tasks, and next steps from these notes. Format them as a clear to-do list with owners (if mentioned) and deadlines (if mentioned):\n\n${notes}`;
+                const actionItems = await languageModel.prompt(actionItemsPrompt);
+                
+                showResult('actionItemsResult', actionItems);
+                document.getElementById('notesProgressBar').style.width = '85%';
+                
+                // Step 3: Generate follow-up questions
+                showStatus('notesStatus', 'Step 3: Generating follow-up questions...', 'loading');
+                
+                const questionsPrompt = `Based on these notes, what are 3-5 important follow-up questions that should be addressed at the next meeting or discussion? Format them as a numbered list:\n\n${notes}`;
+                const followupQuestions = await languageModel.prompt(questionsPrompt);
+                
+                showResult('followupQuestionsResult', followupQuestions);
+                
+                document.getElementById('notesProgressBar').style.width = '100%';
+                showStatus('notesStatus', 'Notes processed successfully!', 'success');
+                
+                // Show results container
+                document.getElementById('notesResults').style.display = 'block';
+                
+                // Hide progress after a delay
+                setTimeout(() => {
+                    document.getElementById('notesProgressContainer').style.display = 'none';
+                }, 1500);
+                
+            } catch (error) {
+                document.getElementById('notesProgressContainer').style.display = 'none';
+                showStatus('notesStatus', `Workflow failed: ${error.message}`, 'error');
+            }
+        }
+
         // Initialize page
         window.addEventListener('load', function() {
             // Check initial support for all APIs
