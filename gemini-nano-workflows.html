@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gemini Nano API Workflows & Integrations</title>
+    <meta name="description" content="Explore advanced workflows and integrations using Chrome's built-in Gemini Nano AI capabilities - combining translation, summarization, writing, and more in powerful ways.">
+    <meta name="keywords" content="Gemini Nano, Chrome, AI Workflows, On-device AI, Machine Learning, Translation, Summarization, LLM, AI Integrations">
+    <meta name="author" content="Anurag Vasanwala">
+    <meta property="og:title" content="Gemini Nano API Workflows & Integrations">
+    <meta property="og:description" content="Explore advanced workflows and integrations using Chrome's built-in Gemini Nano AI capabilities">
+    <meta property="og:image" content="https://anuragvasanwala.github.io/gemini-nano-demos/assets/gemini-nano-featured-image.webp">
+    <meta property="og:url" content="https://anuragvasanwala.github.io/gemini-nano-demos/gemini-nano-workflows.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://anuragvasanwala.github.io/gemini-nano-demos/gemini-nano-workflows.html">
     <style>
         :root {
             --primary: #4285f4;
@@ -393,6 +402,58 @@
             }
         }
         
+        /* Additional styles for navigation and setup section */
+        .requirements {
+            background: rgba(66, 133, 244, 0.05);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(66, 133, 244, 0.2);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .requirements h3 {
+            margin-bottom: var(--spacing-md);
+            color: var(--primary);
+        }
+        
+        .requirements ul {
+            padding-left: var(--spacing-lg);
+        }
+        
+        .requirements li {
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .setup-intro {
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .setup-link {
+            color: var(--primary);
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        .setup-link:hover {
+            text-decoration: underline;
+        }
+        
+        .footer-links {
+            margin-top: var(--spacing-md);
+            font-size: 0.85rem;
+        }
+        
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: var(--spacing-xs) var(--spacing-sm);
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
         /* Google Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono&display=swap');
     </style>
@@ -404,9 +465,32 @@
             <p class="subtitle">Discover how multiple Gemini Nano APIs can be chained together to create powerful workflows for real-world applications, all running locally on your device.</p>
             
             <div class="nav-links">
-                <a href="gemini-nano-samples.html" class="nav-link">← Back to API Demo</a>
+                <a href="index.html" class="nav-link">🏠 Home</a>
+                <a href="index.html#setup" class="nav-link">⚙️ Setup & Configuration</a>
+                <a href="gemini-nano-samples.html" class="nav-link">📱 API Demos</a>
             </div>
         </header>
+        
+        <div class="requirements">
+            <h3>ℹ️ Requirements & Setup</h3>
+            <p class="setup-intro">Before using these workflows, ensure your browser is properly configured:</p>
+            <ul>
+                <li><strong>Chrome Version:</strong> Chrome 138+ required</li>
+                <li><strong>Enable Flags:</strong> Go to <code>chrome://flags</code> and enable:
+                    <ul>
+                        <li><code>Prompt API for Gemini Nano</code> - Enable</li>
+                        <li><code>Prompt API for Gemini Nano with Multimodal Input</code> - Enable</li>
+                        <li><code>Summarization API for Gemini Nano</code> - Enable</li>
+                        <li><code>Writer API for Gemini Nano</code> - Enable</li>
+                        <li><code>Rewriter API for Gemini Nano</code> - Enable</li>
+                        <li><code>Optimization Guide On Device Model</code> - Enable</li>
+                    </ul>
+                </li>
+                <li><strong>Component Updates:</strong> Visit <code>chrome://components</code> and update "Optimization Guide On Device Model"</li>
+                <li><strong>First Run:</strong> Models will download automatically when you first use each API</li>
+                <li><strong>For detailed setup instructions with screenshots:</strong> <a href="index.html#setup" class="setup-link">View Complete Setup Guide</a></li>
+            </ul>
+        </div>
         
         <div class="workflow-grid">
             <!-- Workflow 1: Foreign Content Summarizer -->
@@ -1056,8 +1140,13 @@ The WHO's mandate includes advocating for universal healthcare, monitoring publi
         </div>
         
         <footer>
-            <p>Note: All processing happens locally on your device using Google's Gemini Nano models - no data is sent to the cloud.</p>
-            <p style="margin-top: var(--spacing-sm);"><a href="gemini-nano-samples.html">← Back to Individual API Demos</a></p>
+            <p>💡 All processing happens locally on your device using Google's Gemini Nano models - no data is sent to the cloud.</p>
+            
+            <div class="footer-links">
+                <a href="index.html">🏠 Home</a> | 
+                <a href="gemini-nano-samples.html">📱 API Demos</a> | 
+                <a href="index.html#setup">⚙️ Setup & Configuration</a>
+            </div>
         </footer>
     </div>
 
